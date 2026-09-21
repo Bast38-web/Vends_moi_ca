@@ -33,9 +33,9 @@ export function makeDemoResult(): AnalyzeResult {
     description: 'Perceuse-visseuse Bosch Professional GSR 18V-55 en très bon état visuel. Quelques légères traces d’utilisation visibles sur le carter. Coffret inclus tel que visible sur les photos. Fonctionnement à confirmer avec l’acheteur si aucun test n’a été indiqué. Remise en main propre ou envoi selon accord. Prix raisonnablement négociable.',
     sellerTips: ['Photographier clairement les batteries et leur capacité Ah.', 'Ajouter une photo du mandrin ouvert.', 'Préciser si chargeur et batteries sont inclus.'],
     platformAdvice: [
-      { name: 'Leboncoin', score: 95, reason: 'Très adapté au bricolage et à la remise en main propre.' },
-      { name: 'Facebook Marketplace', score: 82, reason: 'Bon pour une vente locale rapide.' },
-      { name: 'eBay', score: 70, reason: 'Intéressant si l’envoi est simple et la référence recherchée.' },
+      { name: 'Leboncoin', score: 95, reason: 'Très adapté au bricolage et à la remise en main propre.', category: 'Maison & Jardin > Bricolage', condition: 'Très bon état' },
+      { name: 'Facebook Marketplace', score: 82, reason: 'Bon pour une vente locale rapide.', category: 'Outils', condition: 'D’occasion - Très bon état' },
+      { name: 'eBay', score: 70, reason: 'Intéressant si l’envoi est simple et la référence recherchée.', category: 'Bricolage > Outillage électroportatif > Perceuses, visseuses', condition: 'Occasion' },
     ],
     shippingAdvice: 'Expédition possible si l’outil est correctement calé. Pour une batterie lithium, vérifier les règles du transporteur choisi.',
     sources: [],

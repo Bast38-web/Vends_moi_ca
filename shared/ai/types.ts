@@ -16,6 +16,10 @@ export type PlatformAdvice = {
   name: string;
   score: number;
   reason: string;
+  /** Catégorie à choisir dans l'arborescence de la plateforme. */
+  category?: string;
+  /** État tel que libellé dans les choix de la plateforme. */
+  condition?: string;
 };
 
 export type AnalyzeResult = {

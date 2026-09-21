@@ -123,6 +123,8 @@ export function normalizeResult(
           name: str(item?.name, 'Plateforme'),
           score: Math.min(100, Math.max(0, Math.round(num(item?.score, 50)))),
           reason: str(item?.reason),
+          category: str(item?.category),
+          condition: str(item?.condition),
         }))
       : [],
     shippingAdvice: str(parsed.shippingAdvice),

@@ -794,7 +794,8 @@ function openMarketplaceSearch(name: string, query: string) {
   if (lower.includes('leboncoin')) url = `https://www.leboncoin.fr/recherche?text=${q}`;
   else if (lower.includes('ebay')) url = `https://www.ebay.fr/sch/i.html?_nkw=${q}`;
   else if (lower.includes('vinted')) url = `https://www.vinted.fr/catalog?search_text=${q}`;
-  else if (lower.includes('rakuten')) url = `https://fr.shopping.rakuten.com/s/${q}`;
+  else if (lower.includes('back market') || lower.includes('backmarket')) url = `https://www.backmarket.fr/fr-fr/search?q=${q}`;
+  else if (lower.includes('momox')) url = 'https://www.momox.fr/';
   else if (lower.includes('facebook')) url = `https://www.facebook.com/marketplace/search/?query=${q}`;
   Linking.openURL(url).catch(() => {});
 }

@@ -218,6 +218,37 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 .btn2 .spin { border-color: rgba(0,0,0,.15); border-top-color: #3B3933; }
 @keyframes sp { to { transform: rotate(360deg); } }
 .hidden { display: none !important; }
+.ver { margin-top: 26px; padding: 14px 4px 0; border-top: 1px solid var(--line); text-align: center; font-size: 11px; color: var(--muted2); }
+.ver b { color: var(--ink3); }
+.ver .st { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-weight: 800; }
+.ver .dot { width: 8px; height: 8px; border-radius: 4px; background: #C9C3B5; }
+.ver .ok .dot { background: #587353; } .ver .ok { color: #3E5A43; }
+.ver .up .dot { background: #C58A1B; } .ver .up { color: #8A6A22; }
+.ver button { margin-top: 10px; background: var(--ink); color: #fff; border-radius: 12px; padding: 10px 16px; font-size: 12px; font-weight: 900; }
+nav button .badge-dot { position: absolute; top: 6px; left: 50%; margin-left: 9px; width: 8px; height: 8px; border-radius: 4px; background: #C58A1B; }
+.plat { flex-wrap: nowrap; }
+.plat .acts { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex: none; }
+.plat .pub { background: var(--ink); color: #fff; border-radius: 10px; padding: 7px 11px; font-size: 11px; font-weight: 900; }
+.kitchips { display: flex; gap: 7px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+.kitchips::-webkit-scrollbar { display: none; }
+.kitchips .chip { white-space: nowrap; padding: 8px 12px; }
+.kstep { display: flex; align-items: center; gap: 8px; margin: 20px 0 9px; font-size: 13px; font-weight: 900; color: var(--ink2); }
+.kstep .n { width: 22px; height: 22px; border-radius: 11px; background: var(--ink); color: #fff; font-size: 11px; display: flex; align-items: center; justify-content: center; }
+.copy { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: #fff; border: 1.5px solid var(--line2); border-radius: 15px; padding: 13px; margin-bottom: 8px; }
+.copy.done { border-color: #587353; background: #F3F8F1; }
+.copy .ic { width: 34px; height: 34px; border-radius: 10px; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: 16px; flex: none; }
+.copy.done .ic { background: #587353; color: #fff; }
+.copy .tx { flex: 1; min-width: 0; }
+.copy .tx b { display: block; font-size: 13px; }
+.copy .tx span { display: block; font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.copy .go { font-size: 11px; font-weight: 900; color: #665622; flex: none; }
+.pick { background: #fff; border: 1px solid var(--line2); border-radius: 15px; padding: 4px 13px; }
+.pick .r { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid #EEEAE1; font-size: 12px; }
+.pick .r:last-child { border-bottom: 0; }
+.pick .r span { width: 78px; flex: none; color: var(--muted); font-weight: 800; }
+.pick .r b { color: var(--ink2); }
+.kthumbs { display: flex; gap: 7px; margin-bottom: 9px; }
+.kthumbs img { width: 58px; height: 58px; border-radius: 10px; object-fit: cover; }
 .picker { position: fixed; inset: 0; z-index: 55; background: rgba(23,23,18,.45); display: flex; align-items: flex-end; justify-content: center; }
 .picker .box { background: var(--bg); width: 100%; max-width: 560px; border-radius: 22px 22px 0 0; padding: 16px 16px calc(22px + var(--safe-b)); }
 .picker .ttl { font-size: 13px; font-weight: 900; text-align: center; margin-bottom: 12px; color: var(--ink2); }
@@ -251,6 +282,7 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 </div>
 <div id="modal"></div>
 <div id="picker"></div>
+<div id="kit"></div>
 <input type="file" id="file" accept="image/*" class="hidden">
 <input type="file" id="camera" accept="image/*" capture="environment" class="hidden">
 <input type="file" id="importFile" accept="application/json,.json" class="hidden">
@@ -261,6 +293,10 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 /* ==========================================================================
    Constantes
    ========================================================================== */
+// Version de CETTE page. À modifier en même temps que public/version.json à chaque livraison.
+const APP_VERSION = '3.5.0';
+const APP_DATE = '2026-09-21';
+
 const STORE = { settings: 'vmc-web-settings', sales: 'vmc-web-sales', keys: 'vmc-web-keys' };
 const PHOTO_MAX = 1280;   // côté max (px) : garde la requête sous la limite Vercel de 4,5 Mo
 const PHOTO_Q = 0.72;
@@ -315,6 +351,8 @@ const S = {
   msg: null,                // message de l'écran Réglages
   busy: false,
   editing: null,            // vente en cours d'édition
+  kit: null,                // kit de publication ouvert
+  update: { state: 'checking' }, // checking | uptodate | available | offline
 };
 S.zone = S.settings.defaultLocation || 'France';
 
@@ -406,10 +444,18 @@ function resizeImage(file, max, quality) {
    Rendu
    ========================================================================== */
 function render() {
-  document.querySelectorAll('#tabs button').forEach((b) => b.classList.toggle('on', b.dataset.to === S.screen));
+  document.querySelectorAll('#tabs button').forEach((b) => {
+    b.classList.toggle('on', b.dataset.to === S.screen);
+    if (b.dataset.to === 'settings') {
+      const has = b.querySelector('.badge-dot');
+      if (S.update.state === 'available' && !has) b.insertAdjacentHTML('beforeend', '<span class="badge-dot"></span>');
+      if (S.update.state !== 'available' && has) has.remove();
+    }
+  });
   const view = $('#view');
   view.innerHTML = { home: viewHome, sell: viewSell, sales: viewSales, settings: viewSettings }[S.screen]();
   renderModal();
+  renderKit();
 }
 
 function stats() {
@@ -574,11 +620,14 @@ function resultHtml() {
     ${r.sellerTips?.length ? `<div class="section">Pour mieux vendre</div><div class="tips"><ul class="bullets">${r.sellerTips.map((x) => `<li>✓ ${esc(x)}</li>`).join('')}</ul></div>` : ''}
 
     ${r.platformAdvice?.length ? `<div class="section">Où la vendre ?</div>${r.platformAdvice.map((p) => `
-      <a class="plat" href="${esc(marketUrl(p.name, query))}" target="_blank" rel="noopener">
+      <div class="plat">
         <span class="sc">${Math.round(p.score)}</span>
         <span style="min-width:0"><span class="n">${esc(p.name)}</span><br><span class="r">${esc(p.reason)}</span></span>
-        <span class="go">Voir les prix ↗</span>
-      </a>`).join('')}` : ''}
+        <span class="acts">
+          <button class="pub" data-act="kitFromResult" data-p="${esc(p.name)}">Publier</button>
+          <a class="go" style="margin:0" href="${esc(marketUrl(p.name, query))}" target="_blank" rel="noopener">Voir les prix ↗</a>
+        </span>
+      </div>`).join('')}` : ''}
 
     ${r.shippingAdvice ? `<div class="ship"><b>📦 Remise / expédition</b><div class="body" style="margin-top:4px">${esc(r.shippingAdvice)}</div></div>` : ''}
 
@@ -599,7 +648,7 @@ function marketUrl(name, query) {
   if (n.includes('leboncoin')) return `https://www.leboncoin.fr/recherche?text=${q}`;
   if (n.includes('ebay')) return `https://www.ebay.fr/sch/i.html?_nkw=${q}`;
   if (n.includes('vinted')) return `https://www.vinted.fr/catalog?search_text=${q}`;
-  if (n.includes('rakuten')) return `https://fr.shopping.rakuten.com/s/${q}`;
+  if (n.includes('momox')) return 'https://www.momox.fr/';
   if (n.includes('facebook')) return `https://www.facebook.com/marketplace/search/?query=${q}`;
   if (n.includes('backmarket') || n.includes('back market')) return `https://www.backmarket.fr/fr-fr/search?q=${q}`;
   return `https://www.google.com/search?q=${encodeURIComponent(`${query} occasion ${name}`)}`;
@@ -635,7 +684,7 @@ function viewSales() {
       </div>
       <div class="row">
         <button class="btn2" data-act="edit" data-id="${esc(x.id)}">Modifier</button>
-        <button class="btn2" data-act="shareSale" data-id="${esc(x.id)}">Partager / copier</button>
+        <button class="btn2" data-act="kitFromSale" data-id="${esc(x.id)}">📤 Publier</button>
       </div>
       <button class="link red" data-act="delete" data-id="${esc(x.id)}">Supprimer</button>
     </div>`).join('')}`;
@@ -708,7 +757,8 @@ function viewSettings() {
   <div class="note">
     <b>🔒 Où va ta clé ?</b>
     <p>Elle est stockée dans ce navigateur, puis envoyée à ton serveur Vercel lors d’une analyse, qui la transmet à ${esc(p.label)} sans l’enregistrer. Les photos sont réduites sur l’appareil avant envoi et ne sont conservées nulle part côté serveur. Sur un appareil partagé, efface la clé après usage ou configure-la plutôt dans les variables Vercel.</p>
-  </div>`;
+  </div>
+  ${versionHtml()}`;
 }
 
 /* --- Fenêtre d'édition d'une vente -------------------------------------- */
@@ -746,6 +796,198 @@ function renderModal() {
   </div>`;
 }
 const signedEuro = (n) => `${n > 0 ? '+' : ''}${euro(n)}`;
+
+/* ==========================================================================
+   Version et mises à jour
+   ========================================================================== */
+const frDate = (iso) => { try { return new Date(`${iso}T12:00:00`).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }); } catch { return iso; } };
+
+/** Compare deux versions « 3.10.2 » : > 0 si a est plus récente. */
+function cmpVersion(a, b) {
+  const pa = String(a).split('.').map(Number); const pb = String(b).split('.').map(Number);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const d = (pa[i] || 0) - (pb[i] || 0);
+    if (d) return d;
+  }
+  return 0;
+}
+
+/** Interroge le serveur (hors cache) pour connaître la dernière version publiée. */
+async function checkUpdate(manual) {
+  S.update = { state: 'checking' };
+  if (S.screen === 'settings') render();
+  try {
+    const res = await fetch(`/version.json?t=${Date.now()}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error();
+    const latest = await res.json();
+    const newer = cmpVersion(latest.version, APP_VERSION) > 0;
+    S.update = { state: newer ? 'available' : 'uptodate', latest, checkedAt: new Date() };
+    if (newer && !manual) toast(`Mise à jour ${latest.version} disponible : voir Réglages.`);
+  } catch {
+    S.update = { state: 'offline', checkedAt: new Date() };
+  }
+  render();
+}
+
+/** Recharge la page en contournant le cache du service worker. */
+async function applyUpdate() {
+  try {
+    const reg = await navigator.serviceWorker?.getRegistration();
+    if (reg) { await reg.update(); await reg.unregister(); }
+    if (window.caches) { const keys = await caches.keys(); await Promise.all(keys.map((k) => caches.delete(k))); }
+  } catch { /* on recharge quand même */ }
+  location.reload();
+}
+
+function versionHtml() {
+  const u = S.update;
+  let status = '<span class="st"><span class="dot"></span>Vérification des mises à jour…</span>';
+  if (u.state === 'uptodate') status = '<span class="st ok"><span class="dot"></span>À jour</span>';
+  if (u.state === 'offline') status = '<span class="st"><span class="dot"></span>Vérification impossible (hors connexion)</span>';
+  if (u.state === 'available') {
+    status = `<span class="st up"><span class="dot"></span>Mise à jour disponible : version ${esc(u.latest.version)} du ${esc(frDate(u.latest.date))}</span>
+      ${u.latest.notes ? `<div style="margin-top:4px">${esc(u.latest.notes)}</div>` : ''}
+      <div><button data-act="applyUpdate">Mettre à jour maintenant</button></div>`;
+  }
+  return `
+  <div class="ver">
+    Vends-moi ça — <b>version ${APP_VERSION}</b> du ${esc(frDate(APP_DATE))}<br>
+    ${status}
+    ${u.state !== 'checking' && u.state !== 'available' ? '<div><button class="link" style="width:auto;padding:8px 0 0;margin:0 auto;background:none;color:#75663C;font-size:11px" data-act="checkUpdate">Vérifier maintenant</button></div>' : ''}
+  </div>`;
+}
+
+/* ==========================================================================
+   Kit de publication
+   ========================================================================== */
+const MAIN_PLATFORMS = ['Leboncoin', 'Vinted', 'eBay', 'Facebook Marketplace'];
+const TITLE_MAX = { ebay: 80 };   // seule limite documentée avec certitude
+
+const pkey = (name) => String(name || '').toLowerCase();
+const slug = (t) => String(t).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'objet';
+
+/** Page « déposer une annonce » de chaque plateforme (ouvre l'app si installée). */
+function publishUrl(name) {
+  const n = pkey(name);
+  if (n.includes('leboncoin')) return 'https://www.leboncoin.fr/deposer-une-annonce';
+  if (n.includes('vinted')) return 'https://www.vinted.fr/items/new';
+  if (n.includes('ebay')) return 'https://www.ebay.fr/sl/sell';
+  if (n.includes('facebook')) return 'https://www.facebook.com/marketplace/create/item';
+  if (n.includes('back')) return 'https://www.backmarket.fr/';
+  if (n.includes('momox')) return 'https://www.momox.fr/';
+  return marketUrl(name, '');
+}
+
+/** Photos pleine taille de l'analyse en cours, dans l'ordre des vues. */
+function currentPhotos() { return SLOTS.map((x) => S.photos[x.role]?.dataUrl).filter(Boolean); }
+
+/** Photos pleine taille des ventes : IndexedDB (localStorage serait trop petit). */
+const photoDB = {
+  _db: null,
+  open() {
+    if (!this._db) {
+      this._db = new Promise((resolve, reject) => {
+        const req = indexedDB.open('vmc-photos', 1);
+        req.onupgradeneeded = () => req.result.createObjectStore('photos');
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+    return this._db;
+  },
+  async run(mode, fn) {
+    try {
+      const db = await this.open();
+      return await new Promise((resolve) => {
+        const tx = db.transaction('photos', mode);
+        const req = fn(tx.objectStore('photos'));
+        tx.oncomplete = () => resolve(req ? req.result : true);
+        tx.onerror = tx.onabort = () => resolve(null);
+      });
+    } catch { return null; }
+  },
+  put(id, photos) { return photos?.length ? this.run('readwrite', (st) => st.put(photos, id)) : null; },
+  get(id) { return this.run('readonly', (st) => st.get(id)); },
+  del(id) { return this.run('readwrite', (st) => st.delete(id)); },
+};
+
+function openKit(base, platform) {
+  const names = [...(base.item.platformAdvice || []).map((p) => p.name), ...MAIN_PLATFORMS];
+  const seen = new Set();
+  base.platforms = names.filter((n) => { const k = pkey(n); if (seen.has(k)) return false; seen.add(k); return true; });
+  base.platform = platform || base.platforms[0];
+  base.copied = {};
+  S.kit = base;
+  renderKit();
+}
+
+/** Valeurs adaptées à la plateforme choisie. */
+function kitFields() {
+  const k = S.kit; const it = k.item;
+  const advice = (it.platformAdvice || []).find((p) => pkey(p.name) === pkey(k.platform)) || {};
+  const max = Object.entries(TITLE_MAX).find(([key]) => pkey(k.platform).includes(key))?.[1];
+  const title = max && it.title.length > max ? it.title.slice(0, max - 1).trim() + '…' : it.title;
+  return {
+    title, titleCut: title !== it.title, max,
+    description: it.description,
+    price: Math.round(it.askingPrice || it.suggestedPrice || 0),
+    category: advice.category || it.category || '',
+    condition: advice.condition || it.condition || '',
+    brand: [it.brand, it.model].filter(Boolean).join(' '),
+  };
+}
+
+function renderKit() {
+  const box = $('#kit');
+  const k = S.kit;
+  if (!k) { box.innerHTML = ''; if (!S.editing) document.body.style.overflow = ''; return; }
+  document.body.style.overflow = 'hidden';
+  const f = kitFields();
+  const copyBtn = (id, icon, label, preview) => `
+    <button class="copy${k.copied[id] ? ' done' : ''}" data-act="kitCopy" data-f="${id}">
+      <span class="ic">${k.copied[id] ? '✓' : icon}</span>
+      <span class="tx"><b>${label}</b><span>${esc(preview)}</span></span>
+      <span class="go">${k.copied[id] ? 'Copié' : 'Copier'}</span>
+    </button>`;
+  const row = (label, value) => value ? `<div class="r"><span>${label}</span><b>${esc(value)}</b></div>` : '';
+  box.innerHTML = `
+  <div class="modal" data-act="closeKit">
+    <div class="sheet" data-stop="1">
+      <div class="bar"><button data-act="closeKit">Fermer</button><b>Publier l’annonce</b><span style="width:44px"></span></div>
+      <div class="in">
+        <div class="kitchips">${k.platforms.map((n) => `<button class="chip${pkey(n) === pkey(k.platform) ? ' on' : ''}" data-act="kitPlatform" data-p="${esc(n)}">${esc(n)}</button>`).join('')}</div>
+
+        <div class="kstep"><span class="n">1</span>Photos</div>
+        ${k.photos.length ? `
+          <div class="kthumbs">${k.photos.map((d) => `<img src="${d}" alt="">`).join('')}</div>
+          <div class="row" style="margin-top:0">
+            <button class="btn2" data-act="kitSavePhotos">⬇ Enregistrer sur le téléphone</button>
+            <button class="btn2" data-act="kitSharePhotos">↗ Partager</button>
+          </div>
+          <div class="small" style="margin-top:6px">Elles apparaîtront en premier quand ${esc(k.platform)} te demandera d’ajouter des photos.</div>`
+        : '<div class="small">Aucune photo conservée pour cette vente : reprends-les directement depuis ta galerie.</div>'}
+
+        <div class="kstep"><span class="n">2</span>Copier les 3 éléments, puis ouvrir ${esc(k.platform)}</div>
+        ${copyBtn('title', 'T', `Titre${f.max ? ` (${f.title.length}/${f.max})` : ` (${f.title.length} car.)`}`, f.title)}
+        ${f.titleCut ? `<div class="small" style="color:#8A6A22;margin:-3px 0 8px">Titre raccourci à ${f.max} caractères pour ${esc(k.platform)}.</div>` : ''}
+        ${copyBtn('desc', '¶', 'Description', f.description)}
+        ${copyBtn('price', '€', 'Prix', `${f.price} €`)}
+        <div class="small">Dans ${esc(k.platform)}, ouvre le presse-papiers du clavier (📋 dans Gboard ou le clavier Samsung) : les trois éléments y sont, touche-les champ par champ.</div>
+        <button class="btn" style="margin-top:12px" data-act="kitOpen">Ouvrir ${esc(k.platform)} ↗</button>
+
+        <div class="kstep"><span class="n">3</span>À choisir dans les menus</div>
+        <div class="pick">
+          ${row('Catégorie', f.category)}
+          ${row('État', f.condition)}
+          ${row('Marque', f.brand)}
+          ${row('Prix', `${f.price} €`)}
+        </div>
+
+        <button class="btn gold" data-act="kitDone">✓ J’ai publié sur ${esc(k.platform)}</button>
+      </div>
+    </div>
+  </div>`;
+}
 
 /* ==========================================================================
    Actions
@@ -814,12 +1056,79 @@ const actions = {
     });
     S.sales = [item, ...S.sales];
     if (!saveSales()) { S.sales.shift(); return; }
+    photoDB.put(item.id, currentPhotos());
     toast(status === 'listed' ? 'Ajouté à tes ventes en ligne.' : 'Brouillon enregistré.');
     S.photos = {}; S.notes = ''; S.ref = ''; S.result = null; S.asking = 0;
     S.screen = 'sales'; S.filter = 'all'; render(); window.scrollTo(0, 0);
   },
 
   filter(el) { S.filter = el.dataset.f; render(); },
+  checkUpdate() { checkUpdate(true); },
+  applyUpdate() { applyUpdate(); },
+
+  /* --- Kit de publication --- */
+  kitFromResult(el) {
+    if (!S.result) return;
+    openKit({ item: Object.assign({}, S.result, { askingPrice: S.asking || S.result.suggestedPrice }), photos: currentPhotos(), fromResult: true }, el.dataset.p);
+  },
+  async kitFromSale(el) {
+    const item = S.sales.find((x) => x.id === el.dataset.id);
+    if (!item) return;
+    const photos = (await photoDB.get(item.id)) || (item.thumb ? [item.thumb] : []);
+    openKit({ item, photos, fromResult: false }, item.platformAdvice?.[0]?.name);
+  },
+  kitPlatform(el) { S.kit.platform = el.dataset.p; S.kit.copied = {}; renderKit(); },
+  closeKit() { S.kit = null; renderKit(); },
+  async kitCopy(el) {
+    const f = el.dataset.f; const k = kitFields();
+    const text = f === 'title' ? k.title : f === 'desc' ? k.description : String(k.price);
+    try {
+      await navigator.clipboard.writeText(text);
+      S.kit.copied[f] = true; renderKit();
+      toast(f === 'title' ? 'Titre copié' : f === 'desc' ? 'Description copiée' : 'Prix copié');
+    } catch { toast('Copie impossible : autorise le presse-papiers pour ce site.'); }
+  },
+  async kitSavePhotos() {
+    const photos = S.kit.photos; if (!photos.length) return;
+    const base = slug(S.kit.item.title || 'objet');
+    for (let i = 0; i < photos.length; i++) {
+      const a = document.createElement('a');
+      a.href = photos[i]; a.download = `${base}-${i + 1}.jpg`;
+      document.body.appendChild(a); a.click(); a.remove();
+      await new Promise((r) => setTimeout(r, 350));
+    }
+    toast(`${photos.length} photo(s) enregistrée(s) dans Téléchargements.`);
+  },
+  async kitSharePhotos() {
+    try {
+      const files = await Promise.all(S.kit.photos.map(async (d, i) => new File([await (await fetch(d)).blob()], `${slug(S.kit.item.title || 'objet')}-${i + 1}.jpg`, { type: 'image/jpeg' })));
+      if (!navigator.canShare || !navigator.canShare({ files })) throw new Error();
+      await navigator.share({ files, title: S.kit.item.title });
+    } catch (e) { if (e && e.name !== 'AbortError') actions.kitSavePhotos(); }
+  },
+  kitOpen() { window.open(publishUrl(S.kit.platform), '_blank', 'noopener'); },
+  kitDone() {
+    const k = S.kit; const now = new Date().toISOString(); const platform = k.platform;
+    if (k.fromResult) {
+      const item = Object.assign({}, k.item, {
+        id: String(Date.now()), createdAt: now, updatedAt: now, thumb: S.photos.general?.small || '',
+        status: 'listed', listedAt: now, platform,
+      });
+      S.sales = [item, ...S.sales];
+      if (!saveSales()) { S.sales.shift(); return; }
+      photoDB.put(item.id, k.photos);
+      S.photos = {}; S.notes = ''; S.ref = ''; S.result = null; S.asking = 0;
+      S.screen = 'sales'; S.filter = 'all';
+    } else {
+      S.sales = S.sales.map((x) => x.id === k.item.id ? Object.assign({}, x, {
+        status: x.status === 'sold' ? 'sold' : 'listed', listedAt: x.listedAt || now, updatedAt: now,
+        platform: x.platform && !x.platform.includes(platform) ? `${x.platform}, ${platform}` : platform,
+      }) : x);
+      saveSales();
+    }
+    S.kit = null; render(); window.scrollTo(0, 0);
+    toast(`Publié sur ${platform} : la vente est « en ligne ».`);
+  },
 
   edit(el) { const x = S.sales.find((s) => s.id === el.dataset.id); if (x) { S.editing = JSON.parse(JSON.stringify(x)); renderModal(); } },
   closeModal() { S.editing = null; renderModal(); },
@@ -838,6 +1147,7 @@ const actions = {
   delete(el) {
     if (!confirm('Supprimer cette vente ? Cette action est définitive.')) return;
     S.sales = S.sales.filter((x) => x.id !== el.dataset.id);
+    photoDB.del(el.dataset.id);
     saveSales(); S.editing = null; render(); toast('Vente supprimée.');
   },
 
@@ -924,7 +1234,7 @@ document.addEventListener('click', (e) => {
   const el = e.target.closest('[data-act]');
   if (!el) return;
   // Un clic dans la feuille modale ne doit pas la fermer.
-  if ((el.dataset.act === 'closeModal' || el.dataset.act === 'closePicker') && e.target.closest('[data-stop]') && !e.target.closest('button')) return;
+  if (['closeModal', 'closePicker', 'closeKit'].includes(el.dataset.act) && e.target.closest('[data-stop]') && !e.target.closest('button')) return;
   const fn = actions[el.dataset.act];
   if (fn) { e.preventDefault(); fn(el); }
 });
@@ -1024,6 +1334,8 @@ window.addEventListener('appinstalled', () => { installPrompt = null; toast('App
 
 (async function init() {
   render();
+  photoDB.open().catch(() => {});
+  checkUpdate(false);
   try {
     const data = await api('/api/providers', null, { withKey: false, timeout: 15000 });
     if (Array.isArray(data.providers) && data.providers.length) {
