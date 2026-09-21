@@ -8,6 +8,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Vends-moi ça">
 <title>Vends-moi ça</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23171712'/%3E%3Cpath d='M18 30l14-14h14v14L32 44z' fill='%23E6D486'/%3E%3Ccircle cx='39' cy='23' r='3' fill='%23171712'/%3E%3C/svg%3E">
 <style>
 /* ==========================================================================
@@ -216,6 +218,16 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 .btn2 .spin { border-color: rgba(0,0,0,.15); border-top-color: #3B3933; }
 @keyframes sp { to { transform: rotate(360deg); } }
 .hidden { display: none !important; }
+.picker { position: fixed; inset: 0; z-index: 55; background: rgba(23,23,18,.45); display: flex; align-items: flex-end; justify-content: center; }
+.picker .box { background: var(--bg); width: 100%; max-width: 560px; border-radius: 22px 22px 0 0; padding: 16px 16px calc(22px + var(--safe-b)); }
+.picker .ttl { font-size: 13px; font-weight: 900; text-align: center; margin-bottom: 12px; color: var(--ink2); }
+.picker .opt { display: flex; align-items: center; gap: 12px; width: 100%; background: #fff; border: 1px solid var(--line2); border-radius: 15px; padding: 15px; margin-bottom: 9px; font-weight: 900; font-size: 14px; text-align: left; }
+.picker .opt span { font-size: 22px; }
+.install { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--line2); border-radius: var(--radius); padding: 13px; margin-bottom: 18px; }
+.install img { width: 44px; height: 44px; border-radius: 11px; }
+.install .tx { flex: 1; font-size: 12px; color: var(--muted); }
+.install .tx b { display: block; color: var(--ink2); font-size: 13px; }
+.install button { background: var(--ink); color: #fff; border-radius: 12px; padding: 10px 13px; font-size: 12px; font-weight: 900; }
 </style>
 </head>
 <body>
@@ -238,7 +250,9 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
   <main id="view"></main>
 </div>
 <div id="modal"></div>
+<div id="picker"></div>
 <input type="file" id="file" accept="image/*" class="hidden">
+<input type="file" id="camera" accept="image/*" capture="environment" class="hidden">
 <input type="file" id="importFile" accept="application/json,.json" class="hidden">
 
 <script>
@@ -417,6 +431,12 @@ function viewHome() {
   const st = stats();
   const recent = S.sales.slice(0, 3);
   return `
+  ${installPrompt && !isStandalone() ? `
+  <div class="install">
+    <img src="/icons/icon-192.png" alt="">
+    <div class="tx"><b>Installer l’application</b>Icône sur l’écran d’accueil, plein écran, sans barre du navigateur.</div>
+    <button data-act="install">Installer</button>
+  </div>` : ''}
   <div class="hero">
     <div class="kicker">VENDS CE QUI DORT CHEZ TOI</div>
     <h2>Une photo suffit pour savoir combien demander.</h2>
@@ -680,6 +700,11 @@ function viewSettings() {
     <button class="btn2" data-act="import">Importer</button>
   </div>
 
+  <div class="section">Application</div>
+  ${isStandalone() ? '<div class="msg ok" style="margin-top:0">Application installée : tu l’utilises en mode app.</div>'
+    : installPrompt ? '<button class="btn" data-act="install">📲 Installer l’application</button>'
+    : '<div class="small">Si le bouton d’installation n’apparaît pas : menu ⋮ de Chrome → « Installer l’application ». Sur iPhone : Partager → « Sur l’écran d’accueil ».</div>'}
+
   <div class="note">
     <b>🔒 Où va ta clé ?</b>
     <p>Elle est stockée dans ce navigateur, puis envoyée à ton serveur Vercel lors d’une analyse, qui la transmet à ${esc(p.label)} sans l’enregistrer. Les photos sont réduites sur l’appareil avant envoi et ne sont conservées nulle part côté serveur. Sur un appareil partagé, efface la clé après usage ou configure-la plutôt dans les variables Vercel.</p>
@@ -726,6 +751,8 @@ const signedEuro = (n) => `${n > 0 ? '+' : ''}${euro(n)}`;
    Actions
    ========================================================================== */
 let pendingRole = null;
+let installPrompt = null;   // évènement « beforeinstallprompt » de Chrome
+const isStandalone = () => window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 let stepTimer = null;
 
 const actions = {
@@ -737,7 +764,34 @@ const actions = {
     S.screen = 'sell'; render(); window.scrollTo(0, 0);
   },
 
-  pickPhoto(el) { pendingRole = el.dataset.role; $('#file').value = ''; $('#file').click(); },
+  pickPhoto(el) {
+    pendingRole = el.dataset.role;
+    const slot = SLOTS.find((x) => x.role === pendingRole);
+    $('#picker').innerHTML = `
+      <div class="picker" data-act="closePicker">
+        <div class="box" data-stop="1">
+          <div class="ttl">${esc(slot ? slot.title : 'Photo')}</div>
+          <button class="opt" data-act="source" data-src="camera"><span>📷</span>Prendre une photo</button>
+          <button class="opt" data-act="source" data-src="file"><span>🖼️</span>Choisir dans la galerie</button>
+          <button class="link" data-act="closePicker">Annuler</button>
+        </div>
+      </div>`;
+  },
+  closePicker() { $('#picker').innerHTML = ''; },
+  source(el) {
+    const input = $(el.dataset.src === 'camera' ? '#camera' : '#file');
+    $('#picker').innerHTML = '';
+    input.value = '';
+    input.click();
+  },
+  async install() {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    const choice = await installPrompt.userChoice.catch(() => null);
+    installPrompt = null;
+    if (choice && choice.outcome === 'accepted') toast('Installation en cours…');
+    render();
+  },
   rmPhoto(el) { delete S.photos[el.dataset.role]; S.result = null; render(); },
 
   analyze() { runAnalysis(false); },
@@ -870,7 +924,7 @@ document.addEventListener('click', (e) => {
   const el = e.target.closest('[data-act]');
   if (!el) return;
   // Un clic dans la feuille modale ne doit pas la fermer.
-  if (el.dataset.act === 'closeModal' && el.classList.contains('modal') && e.target.closest('[data-stop]')) return;
+  if ((el.dataset.act === 'closeModal' || el.dataset.act === 'closePicker') && e.target.closest('[data-stop]') && !e.target.closest('button')) return;
   const fn = actions[el.dataset.act];
   if (fn) { e.preventDefault(); fn(el); }
 });
@@ -917,7 +971,7 @@ document.addEventListener('change', (e) => {
   if (b === 'modelSelect' && el.value) { S.settings.models[S.settings.provider] = el.value; saveSettings(); render(); }
 });
 
-$('#file').addEventListener('change', async (e) => {
+async function onPhotoSelected(e) {
   const file = e.target.files?.[0];
   if (!file || !pendingRole) return;
   const role = pendingRole; pendingRole = null;
@@ -933,7 +987,9 @@ $('#file').addEventListener('change', async (e) => {
   } catch (err) {
     toast(err.message);
   }
-});
+}
+$('#file').addEventListener('change', onPhotoSelected);
+$('#camera').addEventListener('change', onPhotoSelected);
 
 $('#importFile').addEventListener('change', async (e) => {
   const file = e.target.files?.[0];
@@ -956,6 +1012,16 @@ $('#importFile').addEventListener('change', async (e) => {
 /* ==========================================================================
    Démarrage
    ========================================================================== */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+}
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();          // on affiche notre propre bouton « Installer »
+  installPrompt = e;
+  if (!S.editing && (S.screen === 'home' || S.screen === 'settings')) render();
+});
+window.addEventListener('appinstalled', () => { installPrompt = null; toast('Application installée.'); render(); });
+
 (async function init() {
   render();
   try {

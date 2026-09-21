@@ -1,0 +1,20 @@
+{
+  "name": "Vends-moi ça",
+  "short_name": "Vends-moi ça",
+  "description": "Photo → vrai prix → annonce : estimation d'objets d'occasion par IA.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "lang": "fr",
+  "background_color": "#F4F1E8",
+  "theme_color": "#F4F1E8",
+  "categories": ["shopping", "productivity"],
+  "icons": [
+    { "src": "/icons/icon-192-any.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512-any.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

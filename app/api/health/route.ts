@@ -6,7 +6,7 @@ export async function GET() {
   return Response.json({
     ok: true,
     name: 'Vends-moi ça API',
-    version: '3.2.0',
+    version: '3.3.0',
     aiConfigured: configured.length > 0,
     configuredProviders: configured,
     defaultProvider: process.env.AI_PROVIDER || configured[0] || null,
