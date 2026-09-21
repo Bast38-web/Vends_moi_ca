@@ -55,8 +55,10 @@ export const ANALYSIS_SCHEMA = {
           name: { type: 'string' },
           score: { type: 'integer', minimum: 0, maximum: 100 },
           reason: { type: 'string' },
+          category: { type: 'string' },
+          condition: { type: 'string' },
         },
-        required: ['name', 'score', 'reason'],
+        required: ['name', 'score', 'reason', 'category', 'condition'],
         additionalProperties: false,
       },
     },
@@ -90,6 +92,7 @@ ${marketRule}
 - Donne une estimation prudente du délai de vente (saleSpeedDaysLow/High) selon demande, prix et catégorie.
 - Rédige un titre court et une annonce française prête à publier, factuelle et sans promesse invérifiable.
 - Recommande jusqu’à 4 plateformes de revente entre particuliers actives en France, avec score 0-100 et raison : Leboncoin, Vinted, eBay, Facebook Marketplace ; pour une revente immédiate, tu peux aussi proposer Back Market (rachat de high-tech) ou Momox (livres, CD, DVD, jeux vidéo).
+- Pour chaque plateforme recommandée : category = la catégorie la plus proche dans l’arborescence de cette plateforme (ex. « Bricolage > Outillage électroportatif ») ; condition = l’état tel qu’il est libellé dans les choix proposés par cette plateforme.
 - Ne recommande JAMAIS Rakuten (ex-PriceMinister) : sa marketplace française ferme le 30 septembre 2026.
 - sellerTips : 2 à 5 actions concrètes pour améliorer la vente (photo manquante, info à préciser, test utile, etc.).
 - shippingAdvice : conseil d’envoi/remise en main propre adapté au type d’objet, sans inventer de règles juridiques.

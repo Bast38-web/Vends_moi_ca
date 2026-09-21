@@ -1,0 +1,7 @@
+# Optionnel depuis la V3.1 : la configuration se fait dans l'écran Réglages
+# de l'application (fournisseur, clé API, modèle).
+#
+# Cette variable ne sert qu'à pré-remplir l'URL du backend Next.js au premier
+# lancement, si tu utilises le mode « Backend ».
+# En local : l'IP du PC, PAS localhost. Exemple : http://192.168.1.25:3000
+EXPO_PUBLIC_API_URL=
