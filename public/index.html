@@ -294,7 +294,7 @@ nav button .badge-dot { position: absolute; top: 6px; left: 50%; margin-left: 9p
    Constantes
    ========================================================================== */
 // Version de CETTE page. À modifier en même temps que public/version.json à chaque livraison.
-const APP_VERSION = '3.5.0';
+const APP_VERSION = '3.5.1';
 const APP_DATE = '2026-09-21';
 
 const STORE = { settings: 'vmc-web-settings', sales: 'vmc-web-sales', keys: 'vmc-web-keys' };
@@ -355,6 +355,48 @@ const S = {
   update: { state: 'checking' }, // checking | uptodate | available | offline
 };
 S.zone = S.settings.defaultLocation || 'France';
+
+/* --------------------------------------------------------------------------
+   Reprise après actualisation (glisser vers le bas) : on conserve l'onglet,
+   la position de défilement et l'objet en cours (texte + photos + résultat).
+   -------------------------------------------------------------------------- */
+const SCREENS = ['home', 'sell', 'sales', 'settings'];
+const DRAFT_KEY = 'vmc-web-draft';
+const SCROLL_KEY = 'vmc-web-scroll';
+
+function rememberScreen() {
+  try { history.replaceState(null, '', S.screen === 'home' ? location.pathname : `#${S.screen}`); } catch { /* sans effet */ }
+}
+
+let draftTimer = null;
+/** Enregistre l'objet en cours (appel groupé pour ne pas écrire à chaque touche). */
+function saveDraft() {
+  clearTimeout(draftTimer);
+  draftTimer = setTimeout(() => {
+    const empty = !Object.keys(S.photos).length && !S.notes && !S.ref && !S.result;
+    try {
+      if (empty) localStorage.removeItem(DRAFT_KEY);
+      else localStorage.setItem(DRAFT_KEY, JSON.stringify({ notes: S.notes, ref: S.ref, zone: S.zone, result: S.result, asking: S.asking }));
+    } catch { /* stockage indisponible */ }
+    photoDB.run('readwrite', (st) => (empty ? st.delete('__draft__') : st.put(S.photos, '__draft__')));
+  }, 400);
+}
+function clearDraft() {
+  S.photos = {}; S.notes = ''; S.ref = ''; S.result = null; S.asking = 0;
+  saveDraft();
+}
+async function restoreDraft() {
+  let d = null;
+  try { d = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); } catch { d = null; }
+  const photos = await photoDB.get('__draft__');
+  if (!d && !photos) return false;
+  if (d) {
+    S.notes = d.notes || ''; S.ref = d.ref || ''; S.zone = d.zone || S.zone;
+    S.result = d.result || null; S.asking = d.asking || 0;
+  }
+  if (photos && typeof photos === 'object' && !Array.isArray(photos)) S.photos = photos;
+  return true;
+}
 
 /* ==========================================================================
    Utilitaires
@@ -444,6 +486,7 @@ function resizeImage(file, max, quality) {
    Rendu
    ========================================================================== */
 function render() {
+  rememberScreen();
   document.querySelectorAll('#tabs button').forEach((b) => {
     b.classList.toggle('on', b.dataset.to === S.screen);
     if (b.dataset.to === 'settings') {
@@ -1001,7 +1044,7 @@ const actions = {
   go(el) { S.screen = el.dataset.to; S.msg = null; render(); window.scrollTo(0, 0); },
 
   newSale() {
-    S.photos = {}; S.notes = ''; S.ref = ''; S.result = null; S.asking = 0;
+    clearDraft();
     S.zone = S.settings.defaultLocation || 'France';
     S.screen = 'sell'; render(); window.scrollTo(0, 0);
   },
@@ -1034,12 +1077,12 @@ const actions = {
     if (choice && choice.outcome === 'accepted') toast('Installation en cours…');
     render();
   },
-  rmPhoto(el) { delete S.photos[el.dataset.role]; S.result = null; render(); },
+  rmPhoto(el) { delete S.photos[el.dataset.role]; S.result = null; saveDraft(); render(); },
 
   analyze() { runAnalysis(false); },
   demo() { runAnalysis(true); },
 
-  setPrice(el) { S.asking = Number(el.dataset.v) || 0; refreshResult(); },
+  setPrice(el) { S.asking = Number(el.dataset.v) || 0; saveDraft(); refreshResult(); },
 
   async share() { await shareText(S.result, S.asking); },
   async shareSale(el) { const x = S.sales.find((s) => s.id === el.dataset.id); if (x) await shareText(x, x.askingPrice); },
@@ -1058,7 +1101,7 @@ const actions = {
     if (!saveSales()) { S.sales.shift(); return; }
     photoDB.put(item.id, currentPhotos());
     toast(status === 'listed' ? 'Ajouté à tes ventes en ligne.' : 'Brouillon enregistré.');
-    S.photos = {}; S.notes = ''; S.ref = ''; S.result = null; S.asking = 0;
+    clearDraft();
     S.screen = 'sales'; S.filter = 'all'; render(); window.scrollTo(0, 0);
   },
 
@@ -1117,7 +1160,7 @@ const actions = {
       S.sales = [item, ...S.sales];
       if (!saveSales()) { S.sales.shift(); return; }
       photoDB.put(item.id, k.photos);
-      S.photos = {}; S.notes = ''; S.ref = ''; S.result = null; S.asking = 0;
+      clearDraft();
       S.screen = 'sales'; S.filter = 'all';
     } else {
       S.sales = S.sales.map((x) => x.id === k.item.id ? Object.assign({}, x, {
@@ -1204,6 +1247,7 @@ async function runAnalysis(demo) {
       provider: S.settings.provider, model: currentModel(), webSearch: !!S.settings.webSearch,
     });
     S.result = data; S.asking = data.suggestedPrice || 0;
+    saveDraft();
   } catch (err) {
     toast(err.message);
   } finally {
@@ -1242,6 +1286,7 @@ document.addEventListener('click', (e) => {
 document.addEventListener('input', (e) => {
   const el = e.target; const b = el.dataset.bind;
   if (!b) return;
+  if (['ref', 'notes', 'zone', 'r.title', 'r.description', 'asking'].includes(b)) setTimeout(saveDraft, 0);
   const num = (v) => Number(String(v).replace(/[^0-9]/g, '')) || 0;
   switch (b) {
     case 'ref': S.ref = el.value; break;
@@ -1292,6 +1337,7 @@ async function onPhotoSelected(e) {
       resizeImage(file, THUMB_MAX, 0.6),
     ]);
     S.photos[role] = { dataUrl, thumb, small };
+    saveDraft();
     S.result = null;
     render();
   } catch (err) {
@@ -1332,9 +1378,19 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 window.addEventListener('appinstalled', () => { installPrompt = null; toast('Application installée.'); render(); });
 
+window.addEventListener('pagehide', () => {
+  try { sessionStorage.setItem(SCROLL_KEY, JSON.stringify({ screen: S.screen, y: window.scrollY })); } catch { /* sans effet */ }
+});
+
 (async function init() {
+  const fromHash = location.hash.replace('#', '');
+  if (SCREENS.includes(fromHash)) S.screen = fromHash;
+  await restoreDraft().catch(() => false);
   render();
-  photoDB.open().catch(() => {});
+  try {
+    const sc = JSON.parse(sessionStorage.getItem(SCROLL_KEY) || 'null');
+    if (sc && sc.screen === S.screen) requestAnimationFrame(() => window.scrollTo(0, sc.y || 0));
+  } catch { /* sans effet */ }
   checkUpdate(false);
   try {
     const data = await api('/api/providers', null, { withKey: false, timeout: 15000 });

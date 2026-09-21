@@ -3,7 +3,7 @@
  * et non un simple raccourci. Stratégie : réseau d'abord pour la page,
  * cache en secours hors connexion. Les appels /api ne sont jamais mis en cache.
  */
-const CACHE = 'vmc-v3.5';
+const CACHE = 'vmc-v3.5.1';
 const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png'];
 
 self.addEventListener('install', (event) => {

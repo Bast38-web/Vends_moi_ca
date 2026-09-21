@@ -1,5 +1,5 @@
 {
-  "version": "3.5.0",
+  "version": "3.5.1",
   "date": "2026-09-21",
-  "notes": "Indicateur de version et de mise à jour dans Réglages."
+  "notes": "L'actualisation (glisser vers le bas) conserve l'onglet ouvert et l'objet en cours."
 }
