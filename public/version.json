@@ -1,5 +1,5 @@
 {
-  "version": "3.5.1",
+  "version": "4.0.0",
   "date": "2026-09-21",
-  "notes": "L'actualisation (glisser vers le bas) conserve l'onglet ouvert et l'objet en cours."
+  "notes": "Nouveau mode « Acheter » : combien payer un objet en brocante ou sur une annonce en ligne."
 }

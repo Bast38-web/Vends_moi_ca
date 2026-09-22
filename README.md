@@ -44,7 +44,10 @@ Routes API :
 
 | Route | Rôle |
 |---|---|
-| `POST /api/analyze` | analyse (clé : en-tête `x-ai-key`, sinon variable Vercel) |
+| `POST /api/identify` | étape 1 : identification à partir des photos (sans recherche web) |
+| `POST /api/market` | étape 2 : étude de marché à partir de la fiche d'identification (recherche web, sans photo) |
+| `POST /api/buy` | mode « Acheter » : bon prix d'achat et points à vérifier, à partir de la fiche d'identification |
+| `POST /api/analyze` | analyse complète en un appel (app mobile, mode démo) |
 | `POST /api/models` | vérifie une clé et liste les modèles |
 | `GET /api/providers` | catalogue des fournisseurs (alimente Réglages) |
 | `GET /api/health` | état du serveur et clés configurées |

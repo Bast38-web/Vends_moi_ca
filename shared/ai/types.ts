@@ -10,6 +10,17 @@ export type Comparable = {
   price: number;
   condition: string;
   source: string;
+  /** Adresse de l'annonce trouvée par la recherche web (vide si inconnue). */
+  url?: string;
+  /** « vendu » = transaction conclue (prix le plus fiable), « en vente » = annonce active. */
+  status?: 'vendu' | 'en vente' | 'estimation';
+};
+
+/** Consommation d'une analyse (pour calculer son coût). */
+export type Usage = {
+  inputTokens: number;
+  outputTokens: number;
+  webSearches: number;
 };
 
 export type PlatformAdvice = {
@@ -20,6 +31,15 @@ export type PlatformAdvice = {
   category?: string;
   /** État tel que libellé dans les choix de la plateforme. */
   condition?: string;
+};
+
+export type Seasonality = {
+  /** Intensité de la demande de janvier à décembre, 0 à 100. */
+  monthlyDemand: number[];
+  /** Niveau de la saison au moment de l'analyse. */
+  currentLevel: 'basse' | 'moyenne' | 'haute';
+  /** Conseil de calendrier (quand vendre, faut-il attendre). */
+  advice: string;
 };
 
 export type AnalyzeResult = {
@@ -41,9 +61,20 @@ export type AnalyzeResult = {
   negotiationFloor: number;
   estimatedLow: number;
   estimatedHigh: number;
+  seasonality?: Seasonality;
+  /** Prix neuf de référence en France (0 si introuvable). */
+  newPrice?: number;
+  newPriceSource?: string;
+  newPriceUrl?: string;
   demand: 'faible' | 'moyenne' | 'forte';
   saleSpeedDaysLow: number;
   saleSpeedDaysHigh: number;
+  /** Délai de vente au prix « vente rapide » (jours). */
+  quickSaleDaysLow?: number;
+  quickSaleDaysHigh?: number;
+  /** Délai de vente au « prix haut » (jours). */
+  highPriceDaysLow?: number;
+  highPriceDaysHigh?: number;
   marketBasis: string;
   comparables: Comparable[];
   title: string;
@@ -56,6 +87,49 @@ export type AnalyzeResult = {
   /** Fournisseur et modèle réellement utilisés (traçabilité de l'estimation). */
   provider?: ProviderId;
   usedModel?: string;
+  /** Consommation cumulée de l'analyse (toutes étapes confondues). */
+  usage?: Usage;
+};
+
+/** Mode « Acheter » : combien payer un objet d'occasion. */
+export type BuyContext = 'brocante' | 'annonce';
+
+export type BuyCheck = { point: string; why: string };
+
+export type BuyResult = {
+  objectName: string;
+  brand: string;
+  model: string;
+  reference: string;
+  category: string;
+  condition: string;
+  confidence: number;
+  detectedText: string[];
+  identificationWarnings: string[];
+  /** Prix à partir duquel c'est une bonne affaire (≤). */
+  goodDealPrice: number;
+  /** Prix de marché habituel. */
+  averagePrice: number;
+  /** Prix au-delà duquel c'est trop cher (≥). */
+  tooExpensivePrice: number;
+  priceConfidence: number;
+  /** Prix demandé lu sur la capture d'annonce (0 si absent). */
+  askingPriceDetected: number;
+  newPrice: number;
+  newPriceSource: string;
+  newPriceUrl: string;
+  marketBasis: string;
+  comparables: Comparable[];
+  /** Points à contrôler avant d'acheter. */
+  checks: BuyCheck[];
+  /** Signaux d'alerte : contrefaçon, annonce suspecte, prix anormal… */
+  redFlags: string[];
+  context: BuyContext;
+  sources: MarketSource[];
+  mode: 'ai' | 'demo';
+  provider?: ProviderId;
+  usedModel?: string;
+  usage?: Usage;
 };
 
 export type SaleStatus = 'draft' | 'listed' | 'sold';
@@ -109,11 +183,18 @@ export type AnalyzeInput = {
   locationHint?: string;
 };
 
-/** Paramètres d'appel résolus (clé + modèle déjà choisis). */
-export type ProviderCall = AnalyzeInput & {
+/**
+ * Appel générique d'un fournisseur : l'appelant fournit le prompt et le schéma
+ * JSON attendu. Les photos sont optionnelles (étape « marché » sans image).
+ */
+export type ProviderCall = {
   apiKey: string;
   model: string;
   webSearch: boolean;
+  prompt: string;
+  schema: Record<string, unknown>;
+  schemaName: string;
+  imagesDataUrl: string[];
   signal?: AbortSignal;
 };
 
@@ -123,6 +204,8 @@ export type ProviderRawResult = {
   text: string;
   /** Sources web citées, si le fournisseur en expose. */
   sources: MarketSource[];
+  /** Jetons consommés et recherches web effectuées. */
+  usage: Usage;
 };
 
 export type ProviderAdapter = {

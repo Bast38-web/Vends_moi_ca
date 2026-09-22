@@ -1,4 +1,4 @@
-import { buildPrompt, jsonInstruction } from '../schema';
+import { jsonInstruction } from '../schema';
 import type { ProviderAdapter } from '../types';
 import { apiErrorMessage, collectSources, splitDataUrl } from '../utils';
 
@@ -18,23 +18,19 @@ export const geminiAdapter: ProviderAdapter = {
   },
 
   async analyze(call) {
-    // Google Search et le mode JSON strict ne se combinent pas : quand la
-    // recherche est active, on impose le format JSON par le prompt.
-    const prompt = buildPrompt(call, { webSearch: call.webSearch }) + jsonInstruction();
+    // Google Search et le mode JSON strict ne se combinent pas : le format
+    // JSON est imposé par le prompt.
     const model = call.model.replace(/^models\//, '');
 
     const response = await fetch(`${BASE}/models/${encodeURIComponent(model)}:generateContent`, {
       method: 'POST',
       signal: call.signal,
-      headers: {
-        'x-goog-api-key': call.apiKey,
-        'Content-Type': 'application/json',
-      },
+      headers: { 'x-goog-api-key': call.apiKey, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{
           role: 'user',
           parts: [
-            { text: prompt },
+            { text: call.prompt + jsonInstruction(call.schema) },
             ...call.imagesDataUrl.map((dataUrl) => {
               const { mediaType, base64 } = splitDataUrl(dataUrl);
               return { inline_data: { mime_type: mediaType, data: base64 } };
@@ -52,13 +48,25 @@ export const geminiAdapter: ProviderAdapter = {
     const raw = await response.json();
     if (!response.ok) throw new Error(apiErrorMessage(LABEL, response.status, raw));
 
-    const text: string = (raw?.candidates?.[0]?.content?.parts ?? [])
+    const candidate = raw?.candidates?.[0];
+    const text: string = (candidate?.content?.parts ?? [])
       .map((part: any) => String(part?.text ?? ''))
       .join('')
       .trim();
 
     if (!text) throw new Error(`${LABEL} n’a pas renvoyé de résultat exploitable.`);
-    return { text, sources: collectSources(raw?.candidates?.[0]?.groundingMetadata ?? raw) };
+    const meta = raw?.usageMetadata ?? {};
+    const queries = candidate?.groundingMetadata?.webSearchQueries;
+    return {
+      text,
+      sources: collectSources(candidate?.groundingMetadata ?? raw),
+      usage: {
+        inputTokens: Number(meta.promptTokenCount) || 0,
+        outputTokens: (Number(meta.candidatesTokenCount) || 0) + (Number(meta.thoughtsTokenCount) || 0),
+        // La recherche Google est facturée par requête d'origine, non par sous-requête.
+        webSearches: Array.isArray(queries) && queries.length ? 1 : 0,
+      },
+    };
   },
 
   async listModels(apiKey, signal) {

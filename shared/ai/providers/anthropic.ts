@@ -1,4 +1,4 @@
-import { buildPrompt, jsonInstruction } from '../schema';
+import { jsonInstruction } from '../schema';
 import type { ProviderAdapter } from '../types';
 import { apiErrorMessage, collectSources, splitDataUrl } from '../utils';
 
@@ -19,8 +19,6 @@ export const anthropicAdapter: ProviderAdapter = {
   },
 
   async analyze(call) {
-    const prompt = buildPrompt(call, { webSearch: call.webSearch }) + jsonInstruction();
-
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       signal: call.signal,
@@ -44,7 +42,7 @@ export const anthropicAdapter: ProviderAdapter = {
               const { mediaType, base64 } = splitDataUrl(dataUrl);
               return { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } };
             }),
-            { type: 'text', text: prompt },
+            { type: 'text', text: call.prompt + jsonInstruction(call.schema) },
           ],
         }],
       }),
@@ -53,7 +51,6 @@ export const anthropicAdapter: ProviderAdapter = {
     const raw = await response.json();
     if (!response.ok) throw new Error(apiErrorMessage(LABEL, response.status, raw));
 
-    // On concatène les blocs texte : le JSON est dans le dernier bloc utile.
     const text: string = (raw?.content ?? [])
       .filter((block: any) => block?.type === 'text')
       .map((block: any) => String(block.text ?? ''))
@@ -61,7 +58,17 @@ export const anthropicAdapter: ProviderAdapter = {
       .trim();
 
     if (!text) throw new Error(`${LABEL} n’a pas renvoyé de résultat exploitable.`);
-    return { text, sources: collectSources(raw) };
+    return {
+      text,
+      sources: collectSources(raw),
+      usage: {
+        inputTokens: (Number(raw?.usage?.input_tokens) || 0)
+          + (Number(raw?.usage?.cache_read_input_tokens) || 0)
+          + (Number(raw?.usage?.cache_creation_input_tokens) || 0),
+        outputTokens: Number(raw?.usage?.output_tokens) || 0,
+        webSearches: Number(raw?.usage?.server_tool_use?.web_search_requests) || 0,
+      },
+    };
   },
 
   async listModels(apiKey, signal) {

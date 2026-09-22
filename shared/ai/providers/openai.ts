@@ -1,4 +1,3 @@
-import { ANALYSIS_SCHEMA, buildPrompt } from '../schema';
 import type { ProviderAdapter } from '../types';
 import { apiErrorMessage, collectSources } from '../utils';
 
@@ -35,17 +34,12 @@ export const openaiAdapter: ProviderAdapter = {
         input: [{
           role: 'user',
           content: [
-            { type: 'input_text', text: buildPrompt(call, { webSearch: call.webSearch }) },
+            { type: 'input_text', text: call.prompt },
             ...call.imagesDataUrl.map((image_url) => ({ type: 'input_image', image_url, detail: 'auto' })),
           ],
         }],
         text: {
-          format: {
-            type: 'json_schema',
-            name: 'resale_analysis_v3',
-            strict: true,
-            schema: ANALYSIS_SCHEMA,
-          },
+          format: { type: 'json_schema', name: call.schemaName, strict: true, schema: call.schema },
         },
       }),
     });
@@ -58,7 +52,15 @@ export const openaiAdapter: ProviderAdapter = {
       ?.find((part: any) => part?.type === 'output_text')?.text;
 
     if (!text) throw new Error(`${LABEL} n’a pas renvoyé de résultat exploitable.`);
-    return { text, sources: collectSources(raw) };
+    return {
+      text,
+      sources: collectSources(raw),
+      usage: {
+        inputTokens: Number(raw?.usage?.input_tokens) || 0,
+        outputTokens: Number(raw?.usage?.output_tokens) || 0,
+        webSearches: (raw?.output ?? []).filter((item: any) => item?.type === 'web_search_call').length,
+      },
+    };
   },
 
   async listModels(apiKey, signal) {

@@ -218,6 +218,65 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
 .btn2 .spin { border-color: rgba(0,0,0,.15); border-top-color: #3B3933; }
 @keyframes sp { to { transform: rotate(360deg); } }
 .hidden { display: none !important; }
+.bprices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+.bprice { border-radius: 13px; padding: 11px 6px; text-align: center; }
+.bprice .l { font-size: 9px; font-weight: 800; }
+.bprice .v { font-size: 19px; font-weight: 900; margin-top: 3px; }
+.bprice.good { background: #DDEDDD; color: #24482E; }
+.bprice.avg { background: #F1EEE6; color: #34312B; }
+.bprice.bad { background: #F7E4E0; color: #7E4238; }
+.gauge { position: relative; height: 12px; border-radius: 6px; margin: 26px 0 8px; background: linear-gradient(90deg, #9CC49A 0%, #9CC49A var(--g), #E8D9A8 var(--g), #E8D9A8 var(--b), #E3A698 var(--b), #E3A698 100%); }
+.gauge .mk { position: absolute; top: -22px; transform: translateX(-50%); font-size: 10px; font-weight: 900; color: var(--ink); white-space: nowrap; }
+.gauge .mk::after { content: ""; position: absolute; left: 50%; top: 15px; width: 2px; height: 19px; margin-left: -1px; background: var(--ink); }
+.verdict { font-size: 12px; margin-top: 10px; }
+.verdict b { font-weight: 900; }
+.checks label { display: flex; gap: 10px; align-items: flex-start; padding: 9px 0; border-bottom: 1px solid #EEEAE1; cursor: pointer; }
+.checks input { margin-top: 2px; width: 18px; height: 18px; accent-color: #3E6B46; flex: none; }
+.checks b { font-size: 12px; color: var(--ink2); display: block; }
+.checks span { font-size: 11px; color: var(--muted); }
+.checks input:checked + div b { text-decoration: line-through; color: var(--muted); }
+.flags { background: #F7E4E0; border-radius: 13px; padding: 11px 12px; margin-top: 14px; font-size: 12px; color: #7E4238; }
+.flags b { display: block; margin-bottom: 3px; }
+.cst { display: inline-block; border-radius: 999px; padding: 2px 7px; font-size: 9px; font-weight: 900; margin-left: 6px; vertical-align: 1px; }
+.cst.vendu { background: #DDEDDD; color: #24482E; }
+.cst.envente { background: #E3EBF2; color: #334A66; }
+.cst.estimation { background: #ECE7DC; color: #6B675D; }
+.cost { font-size: 11px; color: var(--muted); background: #F7F5EF; border-radius: 11px; padding: 9px 11px; margin-top: 14px; }
+.cost b { color: var(--ink2); }
+.stale { background: #FFF3DA; border-radius: 13px; padding: 11px 12px; margin-top: 11px; font-size: 12px; color: #6E5620; }
+.stale b { color: #5A4516; }
+.stale .row { margin-top: 8px; }
+.stale .btn2 { padding: 9px 8px; }
+.alert { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; background: #FFF3DA; border-radius: 15px; padding: 12px 13px; margin: -10px 0 22px; font-size: 12px; color: #6E5620; font-weight: 700; }
+.idcard .rtitle { margin-top: 4px; }
+.prices3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-top: 6px; }
+.prices3 label { font-size: 9px; font-weight: 800; color: var(--muted); display: block; margin-bottom: 3px; }
+.prices3 input { width: 100%; border: 1px solid #D5D0C5; border-radius: 10px; padding: 8px; font-size: 14px; background: #fff; }
+.price .d { font-size: 9px; color: var(--muted); margin-top: 2px; }
+a.comp { text-decoration: none; color: inherit; }
+.comp .lk { font-size: 10px; font-weight: 900; color: #425B80; margin-top: 2px; }
+.speed b { color: var(--ink2); }
+.newp { display: flex; align-items: center; gap: 10px; background: #F7F5EF; border: 1px solid var(--line2); border-radius: 13px; padding: 10px 12px; margin-top: 10px; }
+.newp .lb { font-size: 11px; font-weight: 900; color: #4D493F; }
+.newp .src { font-size: 10px; color: var(--muted); }
+.newp .src a { color: #425B80; font-weight: 800; text-decoration: none; }
+.newp .in { position: relative; width: 96px; margin-left: auto; flex: none; }
+.newp .in input { width: 100%; border: 1px solid #D5D0C5; border-radius: 10px; padding: 7px 22px 7px 9px; font-size: 15px; font-weight: 900; background: #fff; }
+.newp .in span { position: absolute; right: 8px; top: 8px; font-weight: 900; color: #6D695F; }
+.disc { font-size: 12px; margin-top: 7px; color: var(--muted); }
+.disc b { color: #1D4D32; }
+.season { background: #F7F5EF; border: 1px solid var(--line2); border-radius: 13px; padding: 12px; margin-top: 10px; }
+.season .hd { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 900; color: #4D493F; }
+.season .lvl { border-radius: 999px; padding: 4px 9px; font-size: 10px; font-weight: 900; }
+.season .lvl.haute { background: #DDEDDD; color: #24482E; }
+.season .lvl.moyenne { background: #ECE7DC; color: #514C40; }
+.season .lvl.basse { background: #F6E7CF; color: #7A5A1C; }
+.season .bars { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; align-items: end; height: 58px; margin-top: 10px; border-bottom: 1px solid #DDD7CA; }
+.season .bar { background: #B9CDB5; border-radius: 4px 4px 0 0; min-height: 3px; cursor: default; }
+.season .bar.now { background: #3E6B46; }
+.season .mo { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; margin-top: 4px; font-size: 9px; color: var(--muted2); text-align: center; }
+.season .mo .now { color: var(--ink2); font-weight: 900; }
+.season .adv { font-size: 12px; color: #39372F; margin-top: 9px; line-height: 1.45; }
 .ver { margin-top: 26px; padding: 14px 4px 0; border-top: 1px solid var(--line); text-align: center; font-size: 11px; color: var(--muted2); }
 .ver b { color: var(--ink3); }
 .ver .st { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-weight: 800; }
@@ -274,6 +333,7 @@ nav button .badge-dot { position: absolute; top: 6px; left: 50%; margin-left: 9p
     <nav id="tabs">
       <button data-act="go" data-to="home"><span class="ico">⌂</span><span class="lbl">Accueil</span></button>
       <button data-act="go" data-to="sell"><span class="ico">＋</span><span class="lbl">Vendre</span></button>
+      <button data-act="go" data-to="buy"><span class="ico">€</span><span class="lbl">Acheter</span></button>
       <button data-act="go" data-to="sales"><span class="ico">☷</span><span class="lbl">Mes ventes</span></button>
       <button data-act="go" data-to="settings"><span class="ico">⚙</span><span class="lbl">Réglages</span></button>
     </nav>
@@ -294,7 +354,7 @@ nav button .badge-dot { position: absolute; top: 6px; left: 50%; margin-left: 9p
    Constantes
    ========================================================================== */
 // Version de CETTE page. À modifier en même temps que public/version.json à chaque livraison.
-const APP_VERSION = '3.5.1';
+const APP_VERSION = '4.0.0';
 const APP_DATE = '2026-09-21';
 
 const STORE = { settings: 'vmc-web-settings', sales: 'vmc-web-sales', keys: 'vmc-web-keys' };
@@ -352,6 +412,11 @@ const S = {
   busy: false,
   editing: null,            // vente en cours d'édition
   kit: null,                // kit de publication ouvert
+  identity: null,           // étape 1 terminée, en attente de l'étude de marché
+  buy: { context: 'brocante', photos: {}, notes: '', asking: '', identity: null, result: null, loading: false, phase: 'idle', error: null, startedAt: 0, checked: {} },
+  phase: 'idle',            // idle | identify | market
+  marketError: null,
+  startedAt: 0,
   update: { state: 'checking' }, // checking | uptodate | available | offline
 };
 S.zone = S.settings.defaultLocation || 'France';
@@ -360,7 +425,7 @@ S.zone = S.settings.defaultLocation || 'France';
    Reprise après actualisation (glisser vers le bas) : on conserve l'onglet,
    la position de défilement et l'objet en cours (texte + photos + résultat).
    -------------------------------------------------------------------------- */
-const SCREENS = ['home', 'sell', 'sales', 'settings'];
+const SCREENS = ['home', 'sell', 'buy', 'sales', 'settings'];
 const DRAFT_KEY = 'vmc-web-draft';
 const SCROLL_KEY = 'vmc-web-scroll';
 
@@ -373,16 +438,16 @@ let draftTimer = null;
 function saveDraft() {
   clearTimeout(draftTimer);
   draftTimer = setTimeout(() => {
-    const empty = !Object.keys(S.photos).length && !S.notes && !S.ref && !S.result;
+    const empty = !Object.keys(S.photos).length && !S.notes && !S.ref && !S.result && !S.identity;
     try {
       if (empty) localStorage.removeItem(DRAFT_KEY);
-      else localStorage.setItem(DRAFT_KEY, JSON.stringify({ notes: S.notes, ref: S.ref, zone: S.zone, result: S.result, asking: S.asking }));
+      else localStorage.setItem(DRAFT_KEY, JSON.stringify({ notes: S.notes, ref: S.ref, zone: S.zone, result: S.result, asking: S.asking, identity: S.identity }));
     } catch { /* stockage indisponible */ }
     photoDB.run('readwrite', (st) => (empty ? st.delete('__draft__') : st.put(S.photos, '__draft__')));
   }, 400);
 }
 function clearDraft() {
-  S.photos = {}; S.notes = ''; S.ref = ''; S.result = null; S.asking = 0;
+  S.photos = {}; S.notes = ''; S.ref = ''; S.result = null; S.asking = 0; S.identity = null; S.marketError = null;
   saveDraft();
 }
 async function restoreDraft() {
@@ -392,7 +457,7 @@ async function restoreDraft() {
   if (!d && !photos) return false;
   if (d) {
     S.notes = d.notes || ''; S.ref = d.ref || ''; S.zone = d.zone || S.zone;
-    S.result = d.result || null; S.asking = d.asking || 0;
+    S.result = d.result || null; S.asking = d.asking || 0; S.identity = d.identity || null;
   }
   if (photos && typeof photos === 'object' && !Array.isArray(photos)) S.photos = photos;
   return true;
@@ -496,7 +561,7 @@ function render() {
     }
   });
   const view = $('#view');
-  view.innerHTML = { home: viewHome, sell: viewSell, sales: viewSales, settings: viewSettings }[S.screen]();
+  view.innerHTML = { home: viewHome, sell: viewSell, buy: viewBuy, sales: viewSales, settings: viewSettings }[S.screen]();
   renderModal();
   renderKit();
 }
@@ -530,7 +595,8 @@ function viewHome() {
     <div class="kicker">VENDS CE QUI DORT CHEZ TOI</div>
     <h2>Une photo suffit pour savoir combien demander.</h2>
     <p>L’IA identifie, cherche le marché d’occasion, estime un prix réaliste et écrit l’annonce.</p>
-    <button class="btn gold" data-act="newSale">📷 Photographier un objet</button>
+    <button class="btn gold" data-act="newSale">📷 Photographier un objet à vendre</button>
+    <button class="btn" style="margin-top:9px;background:transparent;border:1px solid #5B5E53;color:#E6E3D8" data-act="go" data-to="buy">💶 Combien payer un objet ?</button>
   </div>
   <div class="h2">Ton tableau de bord</div>
   <div class="grid2">
@@ -542,6 +608,7 @@ function viewHome() {
     <div class="mini"><b>${st.listed}</b><span>En ligne</span></div>
     <div class="mini"><b>${st.sold}</b><span>Vendues</span></div>
   </div>
+  ${(() => { const n = S.sales.filter((x) => staleInfo(x)).length; return n ? `<button class="alert" data-act="goStale"><span style="font-size:18px">⏳</span><span style="flex:1">${n} vente(s) en ligne depuis plus longtemps que prévu : un ajustement de prix est conseillé.</span><span class="arrow" style="font-size:20px">›</span></button>` : ''; })()}
   <div class="between"><div class="h2">Derniers objets</div>${S.sales.length ? '<button class="link" style="width:auto;padding:0 0 10px" data-act="go" data-to="sales">Tout voir</button>' : ''}</div>
   ${recent.length ? recent.map((x) => `
     <button class="compact" data-act="edit" data-id="${esc(x.id)}">
@@ -606,23 +673,49 @@ function viewSell() {
   <button class="link" data-act="demo" ${S.loading ? 'disabled' : ''}>Tester en mode Démo</button>
 
   <div id="progress">${S.loading ? progressHtml() : ''}</div>
-  <div id="result">${S.result ? resultHtml() : ''}</div>`;
+  <div id="result">${S.result ? resultHtml() : S.identity ? identityHtml(S.identity) : ''}</div>`;
 }
 
 function progressHtml() {
-  const steps = ['Lecture des photos et des étiquettes', 'Identification de l’objet', 'Recherche de comparables d’occasion', 'Calcul du prix et rédaction de l’annonce'];
-  return `<div class="card progress" style="margin-top:8px"><div class="bold" style="margin-bottom:8px">Analyse en cours…</div>${
+  const steps = ['Identification de l’objet sur les photos', 'Recherche de ventes conclues et d’annonces', 'Prix, délais et rédaction de l’annonce'];
+  const elapsed = S.startedAt ? Math.round((Date.now() - S.startedAt) / 1000) : 0;
+  return `<div class="card progress" style="margin-top:8px"><div class="between" style="margin-bottom:8px"><span class="bold">${S.phase === 'market' ? 'Étude de marché…' : 'Analyse en cours…'}</span><span class="small">${elapsed} s</span></div>${
     steps.map((t, i) => `<div class="r${i <= S.step ? ' on' : ''}"><span class="d">${i < S.step ? '✓' : i === S.step ? '●' : '○'}</span>${t}</div>`).join('')}</div>`;
+}
+
+/** Fiche d'identification affichée pendant (ou après l'échec de) l'étude de marché. */
+function identityHtml(id) {
+  const identity = [id.brand, id.model || id.reference].filter(Boolean).join(' · ') || id.objectName;
+  return `
+  <div class="card result idcard">
+    <div class="rhead">
+      <div style="min-width:0">
+        <div class="kicker">OBJET IDENTIFIÉ</div>
+        <div class="rtitle">${esc(id.objectName)}</div>
+        <div class="muted" style="font-size:12px">${esc(identity)}${id.condition ? ` · ${esc(id.condition)}` : ''}</div>
+      </div>
+      <div class="bubble"><b>${pct(id.confidence)}</b><span>ID</span></div>
+    </div>
+    ${id.identificationWarnings?.length ? `<div class="warn"><b>À vérifier</b>${id.identificationWarnings.map((x) => `• ${esc(x)}`).join('<br>')}</div>` : ''}
+    ${id.detectedText?.length ? `<div class="chips" style="margin-top:12px">${id.detectedText.slice(0, 8).map((x) => `<span class="chip">${esc(x)}</span>`).join('')}</div>` : ''}
+    ${S.marketError ? `
+      <div class="msg ko">L’étude de marché a échoué : ${esc(S.marketError)}</div>
+      <button class="btn" style="margin-top:12px" data-act="retryMarket">Relancer l’étude de marché</button>
+      <div class="small" style="margin-top:6px">L’identification est conservée : seule l’étape de marché sera refaite.</div>` : ''}
+  </div>`;
 }
 
 function resultHtml() {
   const r = S.result;
   const identity = [r.brand, r.model || r.reference].filter(Boolean).join(' · ') || r.objectName;
   const query = (r.keywords || []).join(' ') || r.title;
-  const choice = (label, value, hot) => `
+  const choice = (label, value, hot) => {
+    const sp = saleSpeed(r, value);
+    return `
     <button class="price${hot ? ' hot' : ''}${S.asking === value ? ' on' : ''}" data-act="setPrice" data-v="${value}">
-      <span class="l">${label}</span><span class="v">${euro(value)}</span><span class="c">${S.asking === value ? 'SÉLECTIONNÉ' : ''}</span>
+      <span class="l">${label}</span><span class="v">${euro(value)}</span><span class="d">${sp.low}–${sp.high} j${discountPct(r, value) != null ? ` · ${discountPct(r, value)} %` : ''}</span><span class="c">${S.asking === value ? 'SÉLECTIONNÉ' : ''}</span>
     </button>`;
+  };
   const list = (items) => `<ul class="bullets">${items.map((x) => `<li>• ${esc(x)}</li>`).join('')}</ul>`;
 
   return `
@@ -641,13 +734,31 @@ function resultHtml() {
     <div class="small" style="margin:-4px 0 8px">Touche un prix pour l’utiliser dans l’annonce.</div>
     <div class="prices">${choice('Vente rapide', r.quickSalePrice)}${choice('Conseillé', r.suggestedPrice, true)}${choice('Prix haut', r.estimatedHigh)}</div>
     <div class="meta"><span>Plancher négo : <b class="bold">${euro(r.negotiationFloor)}</b></span><span>Confiance prix : <b class="bold">${pct(r.priceConfidence)}</b></span></div>
-    <div class="meta" style="align-items:center"><span class="pill">Demande ${esc(r.demand)}</span><span>Vente estimée : ${r.saleSpeedDaysLow}–${r.saleSpeedDaysHigh} jours</span></div>
+    <div class="meta" style="align-items:center"><span class="pill">Demande ${esc(r.demand)}</span><span class="speed" id="speed">${speedText(r, S.asking)}</span></div>
+    <div class="newp">
+      <div style="min-width:0">
+        <div class="lb">Prix neuf de référence</div>
+        <div class="src">${r.newPrice ? (r.newPriceUrl ? `<a href="${esc(r.newPriceUrl)}" target="_blank" rel="noopener">${esc(r.newPriceSource || 'Voir la source')} ↗</a>` : esc(r.newPriceSource || 'Estimation IA')) : 'Non trouvé : saisis-le si tu le connais'}</div>
+      </div>
+      <div class="in"><input data-bind="newPrice" inputmode="numeric" value="${r.newPrice ? Math.round(r.newPrice) : ''}" placeholder="—"><span>€</span></div>
+    </div>
+    <div class="disc" id="disc">${discountText(r, S.asking)}</div>
+    ${seasonHtml(r)}
 
     <div class="section">Pourquoi ce prix ?</div>
     <div class="body">${esc(r.marketBasis)}</div>
 
-    ${r.comparables?.length ? `<div class="section">Comparables repérés</div>${r.comparables.slice(0, 5).map((c) => `
-      <div class="comp"><div><div class="t">${esc(c.label)}</div><div class="m">${esc([c.condition, c.source].filter(Boolean).join(' · '))}</div></div><div class="p">${euro(c.price)}</div></div>`).join('')}` : ''}
+    ${r.comparables?.length ? `<div class="section">Comparables repérés</div>
+      <div class="small" style="margin:-4px 0 4px">${compSummary(r.comparables)}</div>${r.comparables.slice(0, 6).map((c) => {
+      const direct = /^https?:\/\//i.test(c.url || '');
+      const href = direct ? c.url : marketUrl(c.source, c.label);
+      return `
+      <a class="comp" href="${esc(href)}" target="_blank" rel="noopener">
+        <div style="min-width:0"><div class="t">${esc(c.label)}${c.status ? `<span class="cst ${c.status === 'en vente' ? 'envente' : esc(c.status)}">${c.status === 'vendu' ? '✓ VENDU' : c.status === 'en vente' ? 'EN VENTE' : 'ESTIMATION'}</span>` : ''}</div><div class="m">${esc([c.condition, c.source].filter(Boolean).join(' · '))}</div>
+        <div class="lk">${direct ? '↗ Voir l’annonce' : '↗ Rechercher des annonces similaires'}</div></div>
+        <div class="p">${euro(c.price)}</div>
+      </a>`;
+    }).join('')}` : ''}
 
     ${r.detectedText?.length ? `<div class="section">Texte lu sur les photos</div><div class="chips">${r.detectedText.slice(0, 8).map((x) => `<span class="chip">${esc(x)}</span>`).join('')}</div>` : ''}
     ${r.defects?.length ? `<div class="section">État visible</div>${list(r.defects)}` : ''}
@@ -676,6 +787,8 @@ function resultHtml() {
 
     ${r.sources?.length ? `<div class="section">Sources marché</div>${r.sources.slice(0, 6).map((s) => `<a class="src" href="${esc(safeUrl(s.url))}" target="_blank" rel="noopener">↗ ${esc(s.title)}</a>`).join('')}` : ''}
 
+    ${r.mode === 'ai' && r.usage ? `<div class="cost">${costLine(r.usage, r.provider, r.usedModel)}</div>` : ''}
+
     <button class="btn" style="margin-top:18px" data-act="save" data-status="listed">Enregistrer comme « en ligne »</button>
     <div class="row">
       <button class="btn2" data-act="save" data-status="draft">Brouillon</button>
@@ -683,6 +796,158 @@ function resultHtml() {
     </div>
     <button class="link" data-act="newSale">＋ Estimer un autre objet</button>
   </div>`;
+}
+
+/**
+ * Délai de vente estimé pour un prix donné, par interpolation entre les trois
+ * points fournis par l'IA (vente rapide, conseillé, prix haut).
+ */
+function saleSpeed(r, price) {
+  const pts = [
+    { p: r.quickSalePrice, lo: r.quickSaleDaysLow ?? Math.round(r.saleSpeedDaysLow * 0.5), hi: r.quickSaleDaysHigh ?? Math.round(r.saleSpeedDaysHigh * 0.5) },
+    { p: r.suggestedPrice, lo: r.saleSpeedDaysLow, hi: r.saleSpeedDaysHigh },
+    { p: r.estimatedHigh, lo: r.highPriceDaysLow ?? r.saleSpeedDaysLow * 2, hi: r.highPriceDaysHigh ?? r.saleSpeedDaysHigh * 2 },
+  ].filter((x) => Number.isFinite(x.p)).sort((a, b) => a.p - b.p);
+  const x = Number(price) || r.suggestedPrice;
+  const first = pts[0]; const last = pts[pts.length - 1];
+  if (x <= first.p) return { low: first.lo, high: first.hi, zone: 'bas' };
+  if (x > last.p) {
+    // Au-delà du prix haut : le délai s'allonge vite et devient incertain.
+    const k = Math.pow(x / last.p, 2);
+    return { low: Math.round(last.lo * k), high: Math.round(last.hi * k), zone: 'hors' };
+  }
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i]; const b = pts[i + 1];
+    if (x >= a.p && x <= b.p) {
+      const t = b.p === a.p ? 0 : (x - a.p) / (b.p - a.p);
+      return { low: Math.round(a.lo + t * (b.lo - a.lo)), high: Math.round(a.hi + t * (b.hi - a.hi)), zone: 'ok' };
+    }
+  }
+  return { low: r.saleSpeedDaysLow, high: r.saleSpeedDaysHigh, zone: 'ok' };
+}
+/** Écart en % entre un prix d'occasion et le prix neuf (négatif = moins cher). */
+function discountPct(r, price) {
+  const np = Number(r.newPrice) || 0; const p = Number(price) || 0;
+  if (!np || !p) return null;
+  const d = Math.round((p / np - 1) * 100);
+  return d > 0 ? `+${d}` : `${d}`;
+}
+function discountText(r, price) {
+  const np = Number(r.newPrice) || 0;
+  if (!np) return 'Renseigne le prix neuf pour voir la remise par rapport au neuf.';
+  const d = discountPct(r, price);
+  const n = Number(d);
+  const hint = n >= 0 ? ' <span style="color:#8A6A22">— au prix du neuf ou plus : peu d’acheteurs choisiront l’occasion</span>'
+    : n > -20 ? ' <span style="color:#8A6A22">— remise faible pour de l’occasion</span>' : '';
+  return `À ${euro(price)}, soit <b>${d} %</b> par rapport au neuf (${euro(np)}).${hint}`;
+}
+const MONTHS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+
+/** Saisonnalité : 12 barres (une par mois), le mois en cours mis en évidence. */
+function seasonHtml(r) {
+  const se = r.seasonality;
+  if (!se || !Array.isArray(se.monthlyDemand) || se.monthlyDemand.length !== 12) return '';
+  const now = new Date().getMonth();
+  const max = Math.max(...se.monthlyDemand, 1);
+  const best = se.monthlyDemand.map((v, i) => ({ v, i })).filter((x) => x.v >= max * 0.9).map((x) => MONTHS[x.i]);
+  const flat = Math.max(...se.monthlyDemand) - Math.min(...se.monthlyDemand) < 20;
+  const label = { haute: 'Haute saison', moyenne: 'Saison moyenne', basse: 'Basse saison' }[se.currentLevel] || 'Saison moyenne';
+  return `
+    <div class="season" role="img" aria-label="Demande par mois, de janvier à décembre : ${se.monthlyDemand.join(', ')} sur 100. Mois en cours : ${MONTHS[now]}.">
+      <div class="hd"><span>Saisonnalité${flat ? ' — peu marquée' : ''}</span><span class="lvl ${esc(se.currentLevel)}">${label} en ${MONTHS[now]}</span></div>
+      <div class="bars">${se.monthlyDemand.map((v, i) => `<div class="bar${i === now ? ' now' : ''}" style="height:${Math.max(5, Math.round((v / 100) * 100))}%" title="${MONTHS[i]} : demande ${v}/100"></div>`).join('')}</div>
+      <div class="mo">${'JFMAMJJASOND'.split('').map((m, i) => `<span class="${i === now ? 'now' : ''}">${m}</span>`).join('')}</div>
+      <div class="adv">${se.advice ? esc(se.advice) : (flat ? 'Pas de période nettement plus favorable : tu peux vendre maintenant.' : `Meilleure période : ${best.join(', ')}.`)}</div>
+    </div>`;
+}
+
+function compSummary(list) {
+  const n = (st) => list.filter((c) => c.status === st).length;
+  const parts = [];
+  if (n('vendu')) parts.push(`${n('vendu')} vente(s) conclue(s)`);
+  if (n('en vente')) parts.push(`${n('en vente')} annonce(s) en cours`);
+  if (n('estimation')) parts.push(`${n('estimation')} estimation(s) du modèle`);
+  const hint = n('vendu') ? 'Les ventes conclues sont les références les plus fiables.' : 'Aucune vente conclue trouvée : les prix affichés surestiment souvent le marché.';
+  return `${parts.join(' · ')}. ${hint}`;
+}
+
+/* --- Coût des analyses -------------------------------------------------- */
+const USAGE_KEY = 'vmc-web-usage';
+const PRICING_URL = {
+  openai: 'https://openai.com/api/pricing/',
+  anthropic: 'https://www.anthropic.com/pricing#api',
+  gemini: 'https://ai.google.dev/gemini-api/docs/pricing',
+  mistral: 'https://mistral.ai/pricing',
+};
+const priceKey = (provider, model) => `${provider}:${model}`;
+function priceFor(provider, model) { return (S.settings.prices || {})[priceKey(provider, model)] || null; }
+
+/** Coût en dollars, ou null si les tarifs du modèle ne sont pas renseignés. */
+function costOf(usage, provider, model) {
+  const pr = priceFor(provider, model);
+  if (!pr || (!pr.in && !pr.out && !pr.search) || !usage) return null;
+  return (usage.inputTokens / 1e6) * (pr.in || 0) + (usage.outputTokens / 1e6) * (pr.out || 0) + (usage.webSearches / 1000) * (pr.search || 0);
+}
+function money(usd) {
+  if (usd == null) return '';
+  const rate = Number(S.settings.usdToEur) || 0;
+  const fmt = (v, cur) => `${v < 0.01 ? v.toFixed(4) : v.toFixed(2)}\u202f${cur}`.replace('.', ',');
+  return rate ? `${fmt(usd * rate, '€')} (${fmt(usd, '$')})` : fmt(usd, '$');
+}
+const nf = (n) => Number(n || 0).toLocaleString('fr-FR');
+function costLine(usage, provider, model) {
+  const c = costOf(usage, provider, model);
+  const detail = `${nf(usage.inputTokens)} jetons en entrée · ${nf(usage.outputTokens)} en sortie · ${nf(usage.webSearches)} recherche(s) web`;
+  return `💶 Coût de l’analyse : ${c != null ? `<b>≈ ${money(c)}</b>` : '<b>tarifs non renseignés</b> (Réglages → Modèle)'}<br>${detail}`;
+}
+function loadUsageLog() { return store.get(USAGE_KEY, []); }
+function logUsage(step, usage, provider, model) {
+  if (!usage) return;
+  const log = loadUsageLog();
+  log.push({ at: new Date().toISOString(), step, provider, model, usage, cost: costOf(usage, provider, model) });
+  store.set(USAGE_KEY, log.slice(-500));
+}
+function usageSummary() {
+  const log = loadUsageLog();
+  const now = new Date();
+  const month = log.filter((x) => { const d = new Date(x.at); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); });
+  // Un coût non calculé à l'époque (tarifs absents) est recalculé avec les tarifs actuels.
+  const sum = (arr) => arr.reduce((a, x) => a + (x.cost ?? costOf(x.usage, x.provider, x.model) ?? 0), 0);
+  const analyses = (arr) => arr.filter((x) => x.step === 'Identification').length;
+  const unknown = log.some((x) => x.cost == null && costOf(x.usage, x.provider, x.model) == null);
+  return { month: { n: analyses(month), cost: sum(month) }, all: { n: analyses(log), cost: sum(log) }, unknown };
+}
+
+/* --- Relances : ventes en ligne depuis trop longtemps -------------------- */
+const DAY = 86400000;
+function staleInfo(x) {
+  if (x.status !== 'listed' || !x.listedAt) return null;
+  if (x.snoozeUntil && Date.now() < new Date(x.snoozeUntil).getTime()) return null;
+  const base = new Date(x.lastPriceDropAt || x.listedAt).getTime();
+  const days = Math.floor((Date.now() - base) / DAY);
+  const sp = saleSpeed(x, x.askingPrice);
+  if (days <= sp.high) return null;
+  const floorPrice = Math.round((x.quickSalePrice || x.askingPrice * 0.8) * 0.9);
+  const next = Math.max(Math.round(x.askingPrice * 0.92), floorPrice);
+  const totalDays = Math.floor((Date.now() - new Date(x.listedAt).getTime()) / DAY);
+  return { days, totalDays, sp, next, atFloor: x.askingPrice <= floorPrice || next >= x.askingPrice };
+}
+function staleHtml(x) {
+  const st = staleInfo(x);
+  if (!st) return '';
+  if (st.atFloor) {
+    return `<div class="stale">⏳ <b>En ligne depuis ${st.totalDays} j</b> (délai estimé ${st.sp.low}–${st.sp.high} j), et le prix est déjà au plancher. Essaie une autre plateforme, de nouvelles photos ou un titre plus précis.
+      <div class="row"><button class="btn2" data-act="kitFromSale" data-id="${esc(x.id)}">Publier ailleurs</button><button class="btn2" data-act="snooze" data-id="${esc(x.id)}">Plus tard (7 j)</button></div></div>`;
+  }
+  const pctDrop = Math.round((st.next / x.askingPrice - 1) * 100);
+  return `<div class="stale">⏳ <b>En ligne depuis ${st.totalDays} j</b>, au-delà du délai estimé (${st.sp.low}–${st.sp.high} j). Baisser à <b>${euro(st.next)}</b> (${pctDrop} %) ?
+    <div class="row"><button class="btn2" data-act="dropPrice" data-id="${esc(x.id)}" data-v="${st.next}">Passer à ${euro(st.next)}</button><button class="btn2" data-act="snooze" data-id="${esc(x.id)}">Plus tard (7 j)</button></div></div>`;
+}
+
+function speedText(r, price) {
+  const sp = saleSpeed(r, price);
+  const txt = `Vente estimée à ${euro(price || r.suggestedPrice)} : <b>${sp.low}–${sp.high} jours</b>`;
+  return sp.zone === 'hors' ? `${txt} <span style="color:#8A6A22">(au-dessus du marché, vente incertaine)</span>` : txt;
 }
 
 function marketUrl(name, query) {
@@ -722,9 +987,10 @@ function viewSales() {
           <span class="status ${esc(x.status)}">${statusLabel[x.status] || ''}</span>
           <div class="t">${esc(x.title)}</div>
           <div class="p">${euro(salePrice(x))}</div>
-          <div class="m">${esc([x.brand, x.model].filter(Boolean).join(' · '))}${x.platform ? ` · ${esc(x.platform)}` : ''}</div>
+          <div class="m">${esc([x.brand, x.model].filter(Boolean).join(' · '))}${x.platform ? ` · ${esc(x.platform)}` : ''}${x.status === 'listed' && x.listedAt ? ` · en ligne depuis ${Math.max(0, Math.floor((Date.now() - new Date(x.listedAt).getTime()) / DAY))} j` : ''}</div>
         </div>
       </div>
+      ${staleHtml(x)}
       <div class="row">
         <button class="btn2" data-act="edit" data-id="${esc(x.id)}">Modifier</button>
         <button class="btn2" data-act="kitFromSale" data-id="${esc(x.id)}">📤 Publier</button>
@@ -773,6 +1039,18 @@ function viewSettings() {
       ${S.models.map((m) => `<option value="${esc(m)}"${m === model ? ' selected' : ''}>${esc(m)}</option>`).join('')}
     </select>` : ''}
 
+  ${(() => {
+    const m = currentModel(); const pr = priceFor(p.id, m) || {};
+    return `
+    <label class="label">Tarifs de ${esc(m)} — pour calculer le coût des analyses</label>
+    <div class="prices3">
+      <div><label>Entrée ($ / 1 M jetons)</label><input inputmode="decimal" data-bind="price.in" value="${pr.in ?? ''}" placeholder="ex. 2,5"></div>
+      <div><label>Sortie ($ / 1 M jetons)</label><input inputmode="decimal" data-bind="price.out" value="${pr.out ?? ''}" placeholder="ex. 10"></div>
+      <div><label>Recherche ($ / 1 000)</label><input inputmode="decimal" data-bind="price.search" value="${pr.search ?? ''}" placeholder="ex. 10"></div>
+    </div>
+    <div class="small" style="margin-top:6px">Recopie les prix publiés par ${esc(p.label)} pour ce modèle : <a href="${esc(PRICING_URL[p.id] || '#')}" target="_blank" rel="noopener" style="color:#425B80;font-weight:800">grille tarifaire officielle ↗</a>. Les tarifs changent : vérifie-les de temps en temps.</div>`;
+  })()}
+
   <div class="card switch">
     <div class="txt"><b>Recherche web de comparables</b>
       <div class="small">${p.supportsWebSearch ? 'Le modèle cherche des annonces d’occasion récentes avant de proposer un prix. Plus lent, mais bien plus fiable.' : `${esc(p.label)} ne propose pas de recherche web : l’estimation reposera sur la seule connaissance du modèle.`}</div>
@@ -784,6 +1062,19 @@ function viewSettings() {
   <input class="input" data-bind="defaultLocation" value="${esc(S.settings.defaultLocation)}" placeholder="France">
 
   ${S.msg ? `<div class="msg ${S.msg.kind}">${esc(S.msg.text)}</div>` : ''}
+
+  <div class="section">Dépenses IA</div>
+  ${(() => {
+    const u = usageSummary();
+    return `<div class="pick">
+      <div class="r"><span>Ce mois-ci</span><b>${u.month.n} analyse(s) · ${u.month.cost ? '≈ ' + money(u.month.cost) : '—'}</b></div>
+      <div class="r"><span>Depuis le début</span><b>${u.all.n} analyse(s) · ${u.all.cost ? '≈ ' + money(u.all.cost) : '—'}</b></div>
+    </div>
+    ${u.unknown ? '<div class="small" style="margin-top:6px">Certaines analyses ne sont pas chiffrées : renseigne les tarifs du modèle utilisé.</div>' : ''}
+    <label class="label">Conversion (facultatif) : 1 $ =</label>
+    <div class="priceedit" style="width:140px"><input class="input" inputmode="decimal" data-bind="usdToEur" value="${S.settings.usdToEur ?? ''}" placeholder="ex. 0,86"><span>€</span></div>
+    <button class="link" style="text-align:left;padding:10px 0 0" data-act="resetUsage">Remettre le suivi à zéro</button>`;
+  })()}
 
   <div class="section">Sauvegarde des ventes</div>
   <div class="small" style="margin-bottom:8px">Les ventes sont enregistrées dans ce navigateur uniquement. Exporte-les régulièrement, ou pour les transférer sur un autre appareil.</div>
@@ -898,6 +1189,248 @@ function versionHtml() {
     ${status}
     ${u.state !== 'checking' && u.state !== 'available' ? '<div><button class="link" style="width:auto;padding:8px 0 0;margin:0 auto;background:none;color:#75663C;font-size:11px" data-act="checkUpdate">Vérifier maintenant</button></div>' : ''}
   </div>`;
+}
+
+/* ==========================================================================
+   Mode « Acheter » : combien payer un objet d'occasion
+   ========================================================================== */
+const BUYDRAFT_KEY = 'vmc-web-buydraft';
+
+function buySlots() {
+  return S.buy.context === 'annonce'
+    ? [
+        { role: 'main', icon: '📱', title: 'Capture de l’annonce', sub: 'Photo, titre et prix visibles', req: true },
+        { role: 'detail', icon: '🔎', title: 'Autre capture / photo', sub: 'Description, détail, étiquette…' },
+      ]
+    : [
+        { role: 'main', icon: '📦', title: 'L’objet', sub: 'Vue d’ensemble, bien cadrée', req: true },
+        { role: 'detail', icon: '🔎', title: 'Étiquette / détail', sub: 'Marque, modèle, référence…' },
+      ];
+}
+
+let buyDraftTimer = null;
+function saveBuyDraft() {
+  clearTimeout(buyDraftTimer);
+  buyDraftTimer = setTimeout(() => {
+    const b = S.buy;
+    const empty = !Object.keys(b.photos).length && !b.notes && !b.asking && !b.result && !b.identity;
+    try {
+      if (empty) localStorage.setItem(BUYDRAFT_KEY, JSON.stringify({ context: b.context }));
+      else localStorage.setItem(BUYDRAFT_KEY, JSON.stringify({ context: b.context, notes: b.notes, asking: b.asking, identity: b.identity, result: b.result }));
+    } catch { /* stockage indisponible */ }
+    photoDB.run('readwrite', (st) => (Object.keys(b.photos).length ? st.put(b.photos, '__buydraft__') : st.delete('__buydraft__')));
+  }, 400);
+}
+async function restoreBuyDraft() {
+  let d = null;
+  try { d = JSON.parse(localStorage.getItem(BUYDRAFT_KEY) || 'null'); } catch { d = null; }
+  if (d) Object.assign(S.buy, {
+    context: d.context === 'annonce' ? 'annonce' : 'brocante',
+    notes: d.notes || '', asking: d.asking || '', identity: d.identity || null, result: d.result || null,
+  });
+  const photos = await photoDB.get('__buydraft__');
+  if (photos && typeof photos === 'object' && !Array.isArray(photos)) S.buy.photos = photos;
+}
+
+function buyAskingPrice(r) {
+  return Number(S.buy.asking) || (r && r.askingPriceDetected) || 0;
+}
+
+/** Position du prix demandé sur l'échelle bonne affaire / moyen / trop cher. */
+function buyVerdictHtml(r) {
+  const ask = buyAskingPrice(r);
+  if (!ask) return '<span class="small">Indique le prix demandé pour le situer sur l’échelle.</span>';
+  const vsAvg = Math.round((ask / r.averagePrice - 1) * 100);
+  const vs = r.averagePrice ? ` (${vsAvg > 0 ? '+' : ''}${vsAvg} % par rapport au prix moyen)` : '';
+  const src = Number(S.buy.asking) ? 'Prix demandé' : 'Prix lu sur l’annonce';
+  if (ask <= r.goodDealPrice) return `${src} ${euro(ask)} : <b style="color:#24482E">bonne affaire</b>${vs}.`;
+  if (ask < r.tooExpensivePrice) return `${src} ${euro(ask)} : <b>dans la moyenne</b>${vs}. Négocier vers ${euro(r.goodDealPrice)}–${euro(r.averagePrice)} reste raisonnable.`;
+  return `${src} ${euro(ask)} : <b style="color:#7E4238">trop cher</b>${vs}. Ne pas dépasser ${euro(r.averagePrice)}.`;
+}
+
+function gaugeHtml(r) {
+  const max = Math.max(r.tooExpensivePrice * 1.3, buyAskingPrice(r) * 1.1, 1);
+  const pos = (v) => Math.min(100, Math.max(0, (v / max) * 100));
+  const ask = buyAskingPrice(r);
+  return `<div class="gauge" style="--g:${pos(r.goodDealPrice)}%;--b:${pos(r.tooExpensivePrice)}%" role="img" aria-label="Échelle de prix : bonne affaire jusqu’à ${r.goodDealPrice} €, trop cher à partir de ${r.tooExpensivePrice} €${ask ? `, prix demandé ${ask} €` : ''}.">
+    ${ask ? `<span class="mk" style="left:${pos(ask)}%">${euro(ask)}</span>` : ''}
+  </div>`;
+}
+
+function compListHtml(list) {
+  if (!list?.length) return '';
+  return `<div class="section">Comparables repérés</div>
+    <div class="small" style="margin:-4px 0 4px">${compSummary(list)}</div>
+    ${list.slice(0, 6).map((c) => {
+      const direct = /^https?:\/\//i.test(c.url || '');
+      const href = direct ? c.url : marketUrl(c.source, c.label);
+      return `<a class="comp" href="${esc(href)}" target="_blank" rel="noopener">
+        <div style="min-width:0"><div class="t">${esc(c.label)}${c.status ? `<span class="cst ${c.status === 'en vente' ? 'envente' : esc(c.status)}">${c.status === 'vendu' ? '✓ VENDU' : c.status === 'en vente' ? 'EN VENTE' : 'ESTIMATION'}</span>` : ''}</div>
+        <div class="m">${esc([c.condition, c.source].filter(Boolean).join(' · '))}</div>
+        <div class="lk">${direct ? '↗ Voir l’annonce' : '↗ Rechercher des annonces similaires'}</div></div>
+        <div class="p">${euro(c.price)}</div></a>`;
+    }).join('')}`;
+}
+
+function buyProgressHtml() {
+  const b = S.buy;
+  const steps = ['Identification de l’objet', 'Recherche des prix du marché', 'Prix d’achat et points à vérifier'];
+  const step = b.phase === 'identify' ? 0 : b.step || 1;
+  const elapsed = b.startedAt ? Math.round((Date.now() - b.startedAt) / 1000) : 0;
+  return `<div class="card progress" style="margin-top:8px"><div class="between" style="margin-bottom:8px"><span class="bold">Estimation en cours…</span><span class="small">${elapsed} s</span></div>${
+    steps.map((t, i) => `<div class="r${i <= step ? ' on' : ''}"><span class="d">${i < step ? '✓' : i === step ? '●' : '○'}</span>${t}</div>`).join('')}</div>`;
+}
+
+function buyResultHtml(r) {
+  const identity = [r.brand, r.model || r.reference].filter(Boolean).join(' · ') || r.objectName;
+  const np = Number(r.newPrice) || 0;
+  return `
+  <div class="card result">
+    <div class="rhead">
+      <div style="min-width:0">
+        <div class="kicker">${r.mode === 'demo' ? 'MODE DÉMO' : 'PRIX D’ACHAT'} — ${r.context === 'annonce' ? 'ANNONCE EN LIGNE' : 'BROCANTE'}</div>
+        <div class="rtitle">${esc(r.objectName)}</div>
+        <div class="muted" style="font-size:12px">${esc(identity)}${r.condition ? ` · ${esc(r.condition)}` : ''}</div>
+      </div>
+      <div class="bubble"><b>${pct(r.confidence)}</b><span>ID</span></div>
+    </div>
+    ${r.identificationWarnings?.length ? `<div class="warn"><b>À vérifier</b>${r.identificationWarnings.map((x) => `• ${esc(x)}`).join('<br>')}</div>` : ''}
+
+    <div class="section">Combien le payer ?</div>
+    <div class="bprices">
+      <div class="bprice good"><div class="l">BONNE AFFAIRE</div><div class="v">≤ ${euro(r.goodDealPrice)}</div></div>
+      <div class="bprice avg"><div class="l">PRIX MOYEN</div><div class="v">≈ ${euro(r.averagePrice)}</div></div>
+      <div class="bprice bad"><div class="l">TROP CHER</div><div class="v">≥ ${euro(r.tooExpensivePrice)}</div></div>
+    </div>
+    <div id="buyGauge">${gaugeHtml(r)}</div>
+    <div class="verdict" id="buyVerdict">${buyVerdictHtml(r)}</div>
+    <div class="meta"><span>Confiance prix : <b class="bold">${pct(r.priceConfidence)}</b></span>${np ? `<span>Neuf : <b class="bold">${euro(np)}</b>${r.newPriceUrl ? ` <a href="${esc(r.newPriceUrl)}" target="_blank" rel="noopener" style="color:#425B80;font-weight:800;text-decoration:none">↗</a>` : ''} · prix moyen = ${Math.round((r.averagePrice / np - 1) * 100)} %</span>` : ''}</div>
+
+    ${r.redFlags?.length ? `<div class="flags"><b>⚠ Signaux d’alerte</b>${r.redFlags.map((x) => `• ${esc(x)}`).join('<br>')}</div>` : ''}
+
+    ${r.checks?.length ? `<div class="section">Points à vérifier avant d’acheter</div>
+      <div class="checks">${r.checks.map((c, i) => `<label><input type="checkbox" data-act="toggleCheck" data-i="${i}" ${S.buy.checked[i] ? 'checked' : ''}><div><b>${esc(c.point)}</b><span>${esc(c.why)}</span></div></label>`).join('')}</div>` : ''}
+
+    ${compListHtml(r.comparables)}
+
+    <div class="section">Comment ces prix sont établis</div>
+    <div class="body">${esc(r.marketBasis)}</div>
+    ${r.sources?.length ? `<div class="section">Sources</div>${r.sources.slice(0, 6).map((x) => `<a class="src" href="${esc(safeUrl(x.url))}" target="_blank" rel="noopener">↗ ${esc(x.title)}</a>`).join('')}` : ''}
+
+    ${r.mode === 'ai' && r.usage ? `<div class="cost">${costLine(r.usage, r.provider, r.usedModel)}</div>` : ''}
+    <button class="link" data-act="buyReset">＋ Estimer un autre objet</button>
+  </div>`;
+}
+
+function viewBuy() {
+  const b = S.buy; const r = readiness();
+  const slots = buySlots();
+  return `
+  <div class="kicker">J’ACHÈTE</div>
+  <div class="h1">Combien le payer ?</div>
+  <div class="muted">Photographie l’objet ou fais une capture de l’annonce : l’app te donne le prix d’une bonne affaire, le prix moyen et le prix à ne pas dépasser.</div>
+
+  <div class="section">Où es-tu ?</div>
+  <div class="seg">
+    <button class="${b.context === 'brocante' ? 'on' : ''}" data-act="buyContext" data-c="brocante">Brocante / vide-grenier</button>
+    <button class="${b.context === 'annonce' ? 'on' : ''}" data-act="buyContext" data-c="annonce">Annonce en ligne</button>
+  </div>
+
+  <div class="step"><span class="n">1</span><span class="x">${b.context === 'annonce' ? 'Capture de l’annonce' : 'Photo de l’objet'}</span></div>
+  <div class="slots">${slots.map((sl) => {
+    const ph = b.photos[sl.role];
+    return ph ? `
+      <div class="slot filled"><img src="${ph.thumb}" alt=""><div class="cap">✓ ${esc(sl.title)}</div>
+        <button class="rm" data-act="rmPhoto" data-target="buy" data-role="${sl.role}" aria-label="Retirer">×</button></div>` : `
+      <button class="slot${sl.req ? ' req' : ''}" data-act="pickPhoto" data-target="buy" data-role="${sl.role}">
+        <div class="i">${sl.icon}</div><div class="t">${esc(sl.title)}${sl.req ? ' *' : ''}</div><div class="s">${esc(sl.sub)}</div><div class="plus">＋</div>
+      </button>`;
+  }).join('')}</div>
+
+  <div class="step"><span class="n">2</span><span class="x">Précisions</span></div>
+  <label class="label">Prix demandé par le vendeur — optionnel</label>
+  <div class="priceedit"><input class="input" data-bind="b.asking" inputmode="numeric" value="${esc(b.asking)}" placeholder="${b.context === 'annonce' ? 'lu sur la capture' : 'ex. 40'}"><span>€</span></div>
+  <label class="label">Ce que tu sais de l’objet — optionnel</label>
+  <textarea class="textarea" data-bind="b.notes" placeholder="Ex. testé devant moi, batterie incluse, rayure sur le côté…">${esc(b.notes)}</textarea>
+
+  <button class="state" data-act="go" data-to="settings"><b>${esc(r.title)}</b><span>${esc(r.text)}</span></button>
+  <button class="btn" data-act="runBuy" ${b.loading ? 'disabled' : ''}>${b.loading ? '<span class="spin"></span>' : 'Estimer le bon prix d’achat'}</button>
+  <button class="link" data-act="buyDemo" ${b.loading ? 'disabled' : ''}>Tester en mode Démo</button>
+
+  <div id="buyProgress">${b.loading ? buyProgressHtml() : ''}</div>
+  <div id="buyResult">${b.result ? buyResultHtml(b.result) : b.identity ? `
+    <div class="card result idcard">
+      <div class="kicker">OBJET IDENTIFIÉ</div>
+      <div class="rtitle">${esc(b.identity.objectName)}</div>
+      <div class="muted" style="font-size:12px">${esc([b.identity.brand, b.identity.model].filter(Boolean).join(' · '))}</div>
+      ${b.error ? `<div class="msg ko">L’estimation du prix a échoué : ${esc(b.error)}</div>
+        <button class="btn" style="margin-top:12px" data-act="retryBuy">Relancer l’estimation du prix</button>` : ''}
+    </div>` : ''}</div>`;
+}
+
+let buyTimer = null;
+function buyTick() {
+  clearInterval(buyTimer);
+  buyTimer = setInterval(() => {
+    if (!S.buy.loading) return clearInterval(buyTimer);
+    if (S.buy.phase === 'market' && (Date.now() - S.buy.startedAt) > 15000) S.buy.step = 2;
+    const el = $('#buyProgress'); if (el) el.innerHTML = buyProgressHtml();
+  }, 1000);
+}
+
+function buyPayload() {
+  return { notes: S.buy.notes, locationHint: S.settings.defaultLocation || 'France', provider: S.settings.provider, model: currentModel(), webSearch: !!S.settings.webSearch };
+}
+
+async function runBuy(demo) {
+  const b = S.buy;
+  if (!demo && !b.photos.main) { toast(b.context === 'annonce' ? 'Ajoute la capture de l’annonce.' : 'Ajoute la photo de l’objet.'); return; }
+  if (!demo && !readiness().ok) {
+    if (confirm('Aucune clé API configurée. Ouvrir les Réglages ?')) { S.screen = 'settings'; render(); }
+    return;
+  }
+  Object.assign(b, { loading: true, phase: 'identify', step: 0, result: null, identity: null, error: null, checked: {}, startedAt: Date.now() });
+  render(); buyTick();
+  $('#buyProgress')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (demo) {
+    try { b.result = await api('/api/buy', { demo: true, context: b.context }); saveBuyDraft(); }
+    catch (err) { toast(err.message); }
+    finally { endBuy(); }
+    return;
+  }
+  try {
+    const images = ['main', 'detail'].map((k) => b.photos[k]?.dataUrl).filter(Boolean);
+    const id = await api('/api/identify', { imagesDataUrl: images, ...buyPayload() });
+    logUsage('Identification', id.usage, id.provider, id.usedModel);
+    b.identity = id; saveBuyDraft();
+  } catch (err) { toast(err.message); endBuy(); return; }
+  await runBuyMarket();
+}
+
+async function runBuyMarket() {
+  const b = S.buy;
+  Object.assign(b, { loading: true, phase: 'market', step: 1, error: null });
+  if (!b.startedAt) b.startedAt = Date.now();
+  render(); buyTick();
+  try {
+    const data = await api('/api/buy', { identity: b.identity, context: b.context, askingPrice: Number(b.asking) || 0, ...buyPayload() });
+    logUsage('Prix d’achat', {
+      inputTokens: Math.max(0, (data.usage?.inputTokens || 0) - (b.identity.usage?.inputTokens || 0)),
+      outputTokens: Math.max(0, (data.usage?.outputTokens || 0) - (b.identity.usage?.outputTokens || 0)),
+      webSearches: Math.max(0, (data.usage?.webSearches || 0) - (b.identity.usage?.webSearches || 0)),
+    }, data.provider, data.usedModel);
+    b.result = data; b.identity = null;
+    if (!b.asking && data.askingPriceDetected) b.asking = String(data.askingPriceDetected);
+    saveBuyDraft();
+  } catch (err) {
+    b.error = err.message; saveBuyDraft();
+  } finally { endBuy(); }
+}
+
+function endBuy() {
+  clearInterval(buyTimer);
+  Object.assign(S.buy, { loading: false, phase: 'idle', startedAt: 0 });
+  if (S.screen === 'buy') { render(); $('#buyResult .result')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 }
 
 /* ==========================================================================
@@ -1036,6 +1569,7 @@ function renderKit() {
    Actions
    ========================================================================== */
 let pendingRole = null;
+let pendingTarget = 'sell';
 let installPrompt = null;   // évènement « beforeinstallprompt » de Chrome
 const isStandalone = () => window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 let stepTimer = null;
@@ -1051,7 +1585,8 @@ const actions = {
 
   pickPhoto(el) {
     pendingRole = el.dataset.role;
-    const slot = SLOTS.find((x) => x.role === pendingRole);
+    pendingTarget = el.dataset.target === 'buy' ? 'buy' : 'sell';
+    const slot = (pendingTarget === 'buy' ? buySlots() : SLOTS).find((x) => x.role === pendingRole);
     $('#picker').innerHTML = `
       <div class="picker" data-act="closePicker">
         <div class="box" data-stop="1">
@@ -1077,9 +1612,13 @@ const actions = {
     if (choice && choice.outcome === 'accepted') toast('Installation en cours…');
     render();
   },
-  rmPhoto(el) { delete S.photos[el.dataset.role]; S.result = null; saveDraft(); render(); },
+  rmPhoto(el) {
+    if (el.dataset.target === 'buy') { delete S.buy.photos[el.dataset.role]; S.buy.result = null; S.buy.identity = null; saveBuyDraft(); render(); return; }
+    delete S.photos[el.dataset.role]; S.result = null; saveDraft(); render();
+  },
 
   analyze() { runAnalysis(false); },
+  retryMarket() { if (S.identity) { S.startedAt = Date.now(); runMarket(); } },
   demo() { runAnalysis(true); },
 
   setPrice(el) { S.asking = Number(el.dataset.v) || 0; saveDraft(); refreshResult(); },
@@ -1106,6 +1645,29 @@ const actions = {
   },
 
   filter(el) { S.filter = el.dataset.f; render(); },
+  buyContext(el) { S.buy.context = el.dataset.c; S.buy.result = null; saveBuyDraft(); render(); },
+  runBuy() { runBuy(false); },
+  buyDemo() { runBuy(true); },
+  retryBuy() { if (S.buy.identity) { S.buy.startedAt = Date.now(); runBuyMarket(); } },
+  buyReset() { S.buy = Object.assign(S.buy, { photos: {}, notes: '', asking: '', identity: null, result: null, error: null, checked: {} }); saveBuyDraft(); render(); window.scrollTo(0, 0); },
+  toggleCheck(el) { S.buy.checked[el.dataset.i] = el.checked; },
+  goStale() { S.screen = 'sales'; S.filter = 'listed'; render(); window.scrollTo(0, 0); },
+  dropPrice(el) {
+    const v = Number(el.dataset.v); const now = new Date().toISOString();
+    S.sales = S.sales.map((x) => x.id === el.dataset.id ? Object.assign({}, x, {
+      priceHistory: [...(x.priceHistory || []), { at: now, from: x.askingPrice, to: v }],
+      askingPrice: v, lastPriceDropAt: now, updatedAt: now,
+    }) : x);
+    saveSales(); render();
+    const it = S.sales.find((x) => x.id === el.dataset.id);
+    toast(`Prix passé à ${euro(v)}. Pense à le modifier aussi sur ${it?.platform || 'la plateforme'}.`);
+  },
+  snooze(el) {
+    const until = new Date(Date.now() + 7 * DAY).toISOString();
+    S.sales = S.sales.map((x) => x.id === el.dataset.id ? Object.assign({}, x, { snoozeUntil: until }) : x);
+    saveSales(); render(); toast('Rappel reporté de 7 jours.');
+  },
+  resetUsage() { if (confirm('Remettre à zéro le suivi des dépenses IA ?')) { store.set(USAGE_KEY, []); render(); } },
   checkUpdate() { checkUpdate(true); },
   applyUpdate() { applyUpdate(); },
 
@@ -1230,31 +1792,86 @@ const actions = {
   import() { $('#importFile').value = ''; $('#importFile').click(); },
 };
 
+function stepPayload() {
+  return {
+    notes: S.notes, knownReference: S.ref, locationHint: S.zone,
+    provider: S.settings.provider, model: currentModel(), webSearch: !!S.settings.webSearch,
+  };
+}
+
+function startTimer(fromStep, toStep, every) {
+  clearInterval(stepTimer);
+  S.step = fromStep;
+  stepTimer = setInterval(() => {
+    S.step = Math.min(S.step + 1, toStep);
+    const el = $('#progress'); if (el && S.loading) el.innerHTML = progressHtml();
+  }, every);
+  // Rafraîchit aussi le compteur de secondes.
+  const tick = setInterval(() => { if (!S.loading) return clearInterval(tick); const el = $('#progress'); if (el) el.innerHTML = progressHtml(); }, 1000);
+}
+
 async function runAnalysis(demo) {
   if (!demo && !S.photos.general) { toast('Ajoute au minimum la photo « Vue générale ».'); return; }
   if (!demo && !readiness().ok) {
     if (confirm('Aucune clé API configurée. Ouvrir les Réglages ?')) { S.screen = 'settings'; render(); }
     return;
   }
-  S.loading = true; S.step = 0; S.result = null; render();
+  S.loading = true; S.result = null; S.identity = null; S.marketError = null; S.startedAt = Date.now();
+  S.phase = 'identify';
+  render();
   $('#progress')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  clearInterval(stepTimer);
-  stepTimer = setInterval(() => { S.step = Math.min(S.step + 1, 3); const el = $('#progress'); if (el && S.loading) el.innerHTML = progressHtml(); }, demo ? 350 : 2600);
+
+  if (demo) {
+    startTimer(0, 2, 350);
+    try {
+      const data = await api('/api/analyze', { demo: true });
+      S.result = data; S.asking = data.suggestedPrice || 0; saveDraft();
+    } catch (err) { toast(err.message); }
+    finally { endLoading(); }
+    return;
+  }
+
+  // Étape 1 : identification (photos).
+  startTimer(0, 0, 1000);
   try {
-    const images = SLOTS.map((s) => S.photos[s.role]?.dataUrl).filter(Boolean);
-    const data = await api('/api/analyze', demo ? { demo: true } : {
-      imagesDataUrl: images, notes: S.notes, knownReference: S.ref, locationHint: S.zone,
-      provider: S.settings.provider, model: currentModel(), webSearch: !!S.settings.webSearch,
-    });
-    S.result = data; S.asking = data.suggestedPrice || 0;
+    const images = SLOTS.map((x) => S.photos[x.role]?.dataUrl).filter(Boolean);
+    const id = await api('/api/identify', { imagesDataUrl: images, ...stepPayload() });
+    logUsage('Identification', id.usage, id.provider, id.usedModel);
+    S.identity = id; saveDraft();
+  } catch (err) {
+    toast(err.message); endLoading(); return;
+  }
+  // Étape 2 : marché (fiche seule, avec recherche web).
+  await runMarket();
+}
+
+async function runMarket() {
+  S.loading = true; S.phase = 'market'; S.marketError = null;
+  if (!S.startedAt) S.startedAt = Date.now();
+  render();
+  startTimer(1, 2, 12000);
+  try {
+    const data = await api('/api/market', { identity: S.identity, ...stepPayload() });
+    const marketUsage = {
+      inputTokens: Math.max(0, (data.usage?.inputTokens || 0) - (S.identity.usage?.inputTokens || 0)),
+      outputTokens: Math.max(0, (data.usage?.outputTokens || 0) - (S.identity.usage?.outputTokens || 0)),
+      webSearches: Math.max(0, (data.usage?.webSearches || 0) - (S.identity.usage?.webSearches || 0)),
+    };
+    logUsage('Étude de marché', marketUsage, data.provider, data.usedModel);
+    S.result = data; S.asking = data.suggestedPrice || 0; S.identity = null;
     saveDraft();
   } catch (err) {
-    toast(err.message);
+    S.marketError = err.message;
+    saveDraft();
   } finally {
-    clearInterval(stepTimer);
-    S.loading = false;
-    if (S.screen === 'sell') { render(); $('#result .result')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    endLoading();
   }
+}
+
+function endLoading() {
+  clearInterval(stepTimer);
+  S.loading = false; S.phase = 'idle'; S.startedAt = 0;
+  if (S.screen === 'sell') { render(); $('#result .result')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 }
 
 function refreshResult() {
@@ -1280,19 +1897,30 @@ document.addEventListener('click', (e) => {
   // Un clic dans la feuille modale ne doit pas la fermer.
   if (['closeModal', 'closePicker', 'closeKit'].includes(el.dataset.act) && e.target.closest('[data-stop]') && !e.target.closest('button')) return;
   const fn = actions[el.dataset.act];
-  if (fn) { e.preventDefault(); fn(el); }
+  if (fn) { if (el.tagName !== 'INPUT') e.preventDefault(); fn(el); }
 });
 
 document.addEventListener('input', (e) => {
   const el = e.target; const b = el.dataset.bind;
   if (!b) return;
-  if (['ref', 'notes', 'zone', 'r.title', 'r.description', 'asking'].includes(b)) setTimeout(saveDraft, 0);
+  if (['ref', 'notes', 'zone', 'r.title', 'r.description', 'asking', 'newPrice'].includes(b)) setTimeout(saveDraft, 0);
   const num = (v) => Number(String(v).replace(/[^0-9]/g, '')) || 0;
   switch (b) {
     case 'ref': S.ref = el.value; break;
+    case 'b.asking': S.buy.asking = el.value.replace(/[^0-9]/g, ''); saveBuyDraft(); { const v = $('#buyVerdict'); if (v && S.buy.result) v.innerHTML = buyVerdictHtml(S.buy.result); const g = $('#buyGauge'); if (g && S.buy.result) g.innerHTML = gaugeHtml(S.buy.result); } break;
+    case 'b.notes': S.buy.notes = el.value; saveBuyDraft(); break;
     case 'notes': S.notes = el.value; break;
     case 'zone': S.zone = el.value; break;
     case 'r.title': S.result.title = el.value; break;
+    case 'newPrice': {
+      S.result.newPrice = num(el.value);
+      const dc = $('#disc'); if (dc) dc.innerHTML = discountText(S.result, S.asking);
+      document.querySelectorAll('.price').forEach((pc) => {
+        const v = Number(pc.dataset.v); const sp = saleSpeed(S.result, v); const d = discountPct(S.result, v);
+        pc.querySelector('.d').textContent = `${sp.low}–${sp.high} j${d != null ? ` · ${d} %` : ''}`;
+      });
+      break;
+    }
     case 'r.description': S.result.description = el.value; break;
     case 'asking':
       S.asking = num(el.value);
@@ -1300,6 +1928,8 @@ document.addEventListener('input', (e) => {
         const on = Number(p.dataset.v) === S.asking;
         p.classList.toggle('on', on); p.querySelector('.c').textContent = on ? 'SÉLECTIONNÉ' : '';
       });
+      { const sp = $('#speed'); if (sp && S.result) sp.innerHTML = speedText(S.result, S.asking); }
+      { const dc = $('#disc'); if (dc && S.result) dc.innerHTML = discountText(S.result, S.asking); }
       break;
     case 'key': {
       const v = el.value.trim();
@@ -1311,6 +1941,16 @@ document.addEventListener('input', (e) => {
     }
     case 'model': S.settings.models[S.settings.provider] = el.value.trim(); saveSettings(); break;
     case 'defaultLocation': S.settings.defaultLocation = el.value; saveSettings(); break;
+    case 'price.in': case 'price.out': case 'price.search': {
+      const k = priceKey(S.settings.provider, currentModel());
+      const prices = S.settings.prices || (S.settings.prices = {});
+      const entry = prices[k] || (prices[k] = {});
+      const v = parseFloat(String(el.value).replace(',', '.'));
+      entry[b.split('.')[1]] = Number.isFinite(v) ? v : undefined;
+      saveSettings();
+      break;
+    }
+    case 'usdToEur': { const v = parseFloat(String(el.value).replace(',', '.')); S.settings.usdToEur = Number.isFinite(v) ? v : undefined; saveSettings(); break; }
     case 'e.askingPrice': S.editing.askingPrice = num(el.value); break;
     case 'e.soldPrice': S.editing.soldPrice = num(el.value); { const v = $('#soldValue'); if (v) v.textContent = euro(S.editing.soldPrice); } break;
     case 'e.platform': S.editing.platform = el.value; break;
@@ -1330,15 +1970,22 @@ async function onPhotoSelected(e) {
   const file = e.target.files?.[0];
   if (!file || !pendingRole) return;
   const role = pendingRole; pendingRole = null;
+  const target = pendingTarget; pendingTarget = 'sell';
   try {
     const [dataUrl, thumb, small] = await Promise.all([
       resizeImage(file, PHOTO_MAX, PHOTO_Q),
       resizeImage(file, 520, 0.7),
       resizeImage(file, THUMB_MAX, 0.6),
     ]);
-    S.photos[role] = { dataUrl, thumb, small };
-    saveDraft();
-    S.result = null;
+    if (target === 'buy') {
+      S.buy.photos[role] = { dataUrl, thumb, small };
+      S.buy.result = null; S.buy.identity = null;
+      saveBuyDraft();
+    } else {
+      S.photos[role] = { dataUrl, thumb, small };
+      saveDraft();
+      S.result = null;
+    }
     render();
   } catch (err) {
     toast(err.message);
@@ -1386,6 +2033,7 @@ window.addEventListener('pagehide', () => {
   const fromHash = location.hash.replace('#', '');
   if (SCREENS.includes(fromHash)) S.screen = fromHash;
   await restoreDraft().catch(() => false);
+  await restoreBuyDraft().catch(() => false);
   render();
   try {
     const sc = JSON.parse(sessionStorage.getItem(SCROLL_KEY) || 'null');

@@ -1,4 +1,4 @@
-import { buildPrompt, jsonInstruction } from '../schema';
+import { jsonInstruction } from '../schema';
 import type { ProviderAdapter } from '../types';
 import { apiErrorMessage, collectSources } from '../utils';
 
@@ -18,8 +18,6 @@ export const mistralAdapter: ProviderAdapter = {
   },
 
   async analyze(call) {
-    const prompt = buildPrompt(call, { webSearch: false }) + jsonInstruction();
-
     const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
       method: 'POST',
       signal: call.signal,
@@ -36,7 +34,7 @@ export const mistralAdapter: ProviderAdapter = {
         messages: [{
           role: 'user',
           content: [
-            { type: 'text', text: prompt },
+            { type: 'text', text: call.prompt + jsonInstruction(call.schema) },
             ...call.imagesDataUrl.map((image_url) => ({ type: 'image_url', image_url })),
           ],
         }],
@@ -48,7 +46,15 @@ export const mistralAdapter: ProviderAdapter = {
 
     const text: string = String(raw?.choices?.[0]?.message?.content ?? '').trim();
     if (!text) throw new Error(`${LABEL} n’a pas renvoyé de résultat exploitable.`);
-    return { text, sources: collectSources(raw) };
+    return {
+      text,
+      sources: collectSources(raw),
+      usage: {
+        inputTokens: Number(raw?.usage?.prompt_tokens) || 0,
+        outputTokens: Number(raw?.usage?.completion_tokens) || 0,
+        webSearches: 0,
+      },
+    };
   },
 
   async listModels(apiKey, signal) {

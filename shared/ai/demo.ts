@@ -1,4 +1,4 @@
-import type { AnalyzeResult } from './types';
+import type { AnalyzeResult, BuyContext, BuyResult } from './types';
 
 export function makeDemoResult(): AnalyzeResult {
   return {
@@ -20,14 +20,22 @@ export function makeDemoResult(): AnalyzeResult {
     negotiationFloor: 95,
     estimatedLow: 80,
     estimatedHigh: 125,
+    newPrice: 179,
+    seasonality: { monthlyDemand: [45, 50, 70, 90, 100, 85, 60, 50, 75, 70, 55, 65], currentLevel: 'moyenne', advice: 'Le bricolage se vend le mieux au printemps (avril-mai). En septembre, la reprise des travaux d’automne soutient la demande : inutile d’attendre.' },
+    newPriceSource: 'Démo — prix neuf simulé',
+    newPriceUrl: '',
     demand: 'forte',
     saleSpeedDaysLow: 2,
     saleSpeedDaysHigh: 10,
+    quickSaleDaysLow: 1,
+    quickSaleDaysHigh: 4,
+    highPriceDaysLow: 7,
+    highPriceDaysHigh: 30,
     marketBasis: 'Démonstration locale : estimation simulée pour tester l’interface, sans recherche web réelle.',
     comparables: [
-      { label: 'GSR 18V-55 avec coffret', price: 105, condition: 'Bon état', source: 'Démo' },
-      { label: 'GSR 18V-55 + batterie', price: 120, condition: 'Très bon état', source: 'Démo' },
-      { label: 'GSR 18V-55 nue', price: 82, condition: 'Bon état', source: 'Démo' },
+      { label: 'GSR 18V-55 avec coffret', price: 105, condition: 'Bon état', source: 'Démo', url: '', status: 'estimation' },
+      { label: 'GSR 18V-55 + batterie', price: 120, condition: 'Très bon état', source: 'Démo', url: '', status: 'estimation' },
+      { label: 'GSR 18V-55 nue', price: 82, condition: 'Bon état', source: 'Démo', url: '', status: 'estimation' },
     ],
     title: 'Bosch Professional GSR 18V-55 – très bon état',
     description: 'Perceuse-visseuse Bosch Professional GSR 18V-55 en très bon état visuel. Quelques légères traces d’utilisation visibles sur le carter. Coffret inclus tel que visible sur les photos. Fonctionnement à confirmer avec l’acheteur si aucun test n’a été indiqué. Remise en main propre ou envoi selon accord. Prix raisonnablement négociable.',
@@ -40,5 +48,44 @@ export function makeDemoResult(): AnalyzeResult {
     shippingAdvice: 'Expédition possible si l’outil est correctement calé. Pour une batterie lithium, vérifier les règles du transporteur choisi.',
     sources: [],
     mode: 'demo',
+    usage: { inputTokens: 0, outputTokens: 0, webSearches: 0 },
+  };
+}
+
+export function makeBuyDemoResult(context: BuyContext = 'brocante'): BuyResult {
+  const brocante = context === 'brocante';
+  return {
+    objectName: 'Perceuse-visseuse sans fil',
+    brand: 'Bosch Professional',
+    model: 'GSR 18V-55',
+    reference: 'GSR 18V-55',
+    category: 'Bricolage',
+    condition: 'Bon état apparent',
+    confidence: 0.9,
+    detectedText: ['BOSCH PROFESSIONAL', 'GSR 18V-55'],
+    identificationWarnings: ['Batterie et chargeur non visibles sur la photo de démonstration.'],
+    goodDealPrice: brocante ? 45 : 70,
+    averagePrice: brocante ? 65 : 95,
+    tooExpensivePrice: brocante ? 90 : 125,
+    priceConfidence: 0.75,
+    askingPriceDetected: brocante ? 0 : 110,
+    newPrice: 179,
+    newPriceSource: 'Démo — prix neuf simulé',
+    newPriceUrl: '',
+    marketBasis: 'Démonstration : fourchette simulée pour tester l’interface, sans recherche web réelle.',
+    comparables: [
+      { label: 'GSR 18V-55 + 1 batterie', price: 92, condition: 'Bon état', source: 'Démo', url: '', status: 'estimation' },
+      { label: 'GSR 18V-55 nue', price: 60, condition: 'Bon état', source: 'Démo', url: '', status: 'estimation' },
+    ],
+    checks: [
+      { point: 'Faire tourner la perceuse avec une batterie chargée', why: 'Un moteur ou une gâchette défaillants ne se voient pas à l’œil.' },
+      { point: 'Vérifier si batterie(s) et chargeur sont inclus', why: 'Ils représentent souvent la moitié de la valeur de l’ensemble.' },
+      { point: 'Contrôler le mandrin (serrage, jeu latéral)', why: 'Un mandrin usé fait voiler les forets.' },
+    ],
+    redFlags: brocante ? [] : ['Envoi uniquement et paiement hors plateforme demandé : risque d’arnaque.'],
+    context,
+    sources: [],
+    mode: 'demo',
+    usage: { inputTokens: 0, outputTokens: 0, webSearches: 0 },
   };
 }

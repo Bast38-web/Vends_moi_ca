@@ -8,8 +8,8 @@
  */
 export * from './types';
 export * from './providers';
-export { analyzeObject, normalizeResult, MAX_IMAGES, MAX_IMAGE_CHARS } from './analyze';
-export type { AnalyzeOptions } from './analyze';
-export { ANALYSIS_SCHEMA, buildPrompt, jsonInstruction } from './schema';
-export { makeDemoResult } from './demo';
+export { analyzeObject, identifyObject, studyMarket, studyPurchase, normalizeBuy, normalizeResult, normalizeIdentity, addUsage, MAX_IMAGES, MAX_IMAGE_CHARS } from './analyze';
+export type { AnalyzeOptions, Identity } from './analyze';
+export { ANALYSIS_SCHEMA, IDENTIFY_SCHEMA, MARKET_SCHEMA, buildPrompt, buildIdentifyPrompt, buildMarketPrompt, jsonInstruction } from './schema';
+export { makeDemoResult, makeBuyDemoResult } from './demo';
 export { collectSources, extractJson, splitDataUrl, apiErrorMessage } from './utils';
