@@ -1,5 +1,5 @@
 {
-  "version": "4.0.0",
-  "date": "2026-09-21",
-  "notes": "Nouveau mode « Acheter » : combien payer un objet en brocante ou sur une annonce en ligne."
+  "version": "4.0.1",
+  "date": "2026-09-22",
+  "notes": "Suppression du badge de version en haut de l'écran : la version reste affichée en bas de Réglages."
 }
